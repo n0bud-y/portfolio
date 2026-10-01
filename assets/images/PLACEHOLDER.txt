@@ -1,1 +1,0 @@
-Add real project screenshots here when available. Keep image filenames and references centralized in config/site.php.

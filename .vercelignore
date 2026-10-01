@@ -1,0 +1,7 @@
+# Files that must NOT be uploaded to Vercel (they would become public URLs)
+*.docx
+temp.txt
+README.md
+.htaccess
+node_modules
+.git

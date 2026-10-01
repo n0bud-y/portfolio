@@ -1,0 +1,9 @@
+# Private content notes — keep out of any (public) repository
+*.docx
+temp.txt
+
+# Tooling
+node_modules/
+.vercel/
+.DS_Store
+Thumbs.db
