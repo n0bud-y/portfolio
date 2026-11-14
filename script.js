@@ -1,8 +1,28 @@
 // ================= PROJECT DATA =================
-// category: "business" | "corporate" | "ecommerce"
+// category: "webapp" | "business" | "corporate" | "ecommerce"
 // image: path to a real screenshot, e.g. "images/hanks.jpg" (leave "" to show the gradient placeholder)
 // link:  verified live URL (leave "" to hide the "Show project" button)
 const projects = [
+  {
+    title: "Multi-Brand CMS",
+    type: "Full-Stack Web App",
+    category: "webapp",
+    stack: ["Laravel 12", "Inertia.js", "React", "TypeScript", "MySQL", "REST API"],
+    desc: "One central panel that manages blogs, location pages, sitemaps and site settings for many brand websites, with admin / editor roles and a drop-in PHP kit for each brand site.",
+    icon: "server",
+    image: "",
+    link: "",
+  },
+  {
+    title: "Ink Pixel Studios",
+    type: "Company Website",
+    category: "webapp",
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS v4", "Contentful"],
+    desc: "The studio's brand portfolio and lead-generation website, with content managed in a headless CMS and end-to-end tests.",
+    icon: "wand-magic-sparkles",
+    image: "",
+    link: "",
+  },
   {
     title: "Hank's Heating & Cooling",
     type: "Business Website",
@@ -65,17 +85,6 @@ const projects = [
   },
 ];
 
-// Placeholder backgrounds (used until real screenshots are added)
-const gradients = [
-  "linear-gradient(135deg, #6c63ff, #1b1d3a, #7cf7d4)",
-  "linear-gradient(135deg, #1b3a33, #7cf7d4, #6c63ff)",
-  "linear-gradient(135deg, #14161a, #6c63ff, #b18cff)",
-  "linear-gradient(135deg, #7cf7d4, #6c63ff, #14161a)",
-  "linear-gradient(135deg, #2a2466, #14161a, #7cf7d4)",
-  "linear-gradient(135deg, #6c63ff, #7cf7d4, #2a2466)",
-];
-
-const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 const hasGsap = typeof gsap !== "undefined";
 
 // ================= RENDER PROJECTS =================
@@ -94,19 +103,26 @@ grid.innerHTML = projects
     const img = safeImg(p.image);
     const visual = img
       ? `<img src="${esc(img)}" alt="${esc(p.title)} website screenshot" loading="lazy" decoding="async" width="1280" height="800" />`
-      : `<div class="art" data-gradient="${i % gradients.length}"><svg class="icon" aria-hidden="true"><use href="#i-${esc(p.icon)}"></use></svg></div>`;
+      : `<div class="art" aria-hidden="true">
+          <div class="art-bar"><i></i><i></i><i></i></div>
+          <div class="art-body">
+            <svg class="icon art-icon"><use href="#i-${esc(p.icon)}"></use></svg>
+            <span class="art-title">${esc(p.title)}</span>
+            <div class="art-lines"><span></span><span></span></div>
+            <span class="art-btn"></span>
+          </div>
+        </div>`;
     const overlay = link
-      ? `<div class="overlay"><a href="${esc(link)}" target="_blank" rel="noopener noreferrer" class="show-project">Show project<span class="sr-only"> ${esc(p.title)} (opens in a new tab)</span></a></div>`
+      ? `<div class="overlay"><a href="${esc(link)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">View live site<span class="sr-only"> ${esc(p.title)} (opens in a new tab)</span></a></div>`
       : "";
     return `
-    <article class="project spotlight tilt" data-category="${esc(p.category)}" data-reveal ${link ? 'data-cursor="View"' : ""}>
+    <article class="project glass" data-category="${esc(p.category)}" data-reveal>
       <div class="project-image">
-        <span class="num" aria-hidden="true">${num}</span>
         ${visual}
         ${overlay}
       </div>
       <div class="project-details">
-        <span class="project-category">${esc(p.type)}</span>
+        <div class="project-top"><span class="project-category">${esc(p.type)}</span><span class="num" aria-hidden="true">${num}</span></div>
         <h3 class="project-title">${esc(p.title)}</h3>
         <p class="project-desc">${esc(p.desc)}</p>
         <ul class="tags">${p.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
@@ -115,10 +131,6 @@ grid.innerHTML = projects
   })
   .join("");
 
-// Set placeholder gradients from JS (the Content-Security-Policy blocks inline style="" attributes)
-grid.querySelectorAll(".art[data-gradient]").forEach((el) => {
-  el.style.background = gradients[Number(el.dataset.gradient)];
-});
 
 // ================= FILTERS =================
 const filters = document.querySelectorAll(".filter");
@@ -154,6 +166,31 @@ filters.forEach((btn) => {
   });
 });
 
+// ================= 3D TILT + SPOTLIGHT ON PROJECT CARDS (desktop mouse only) =================
+// The card leans toward the cursor, the mockup inside drifts the other way (depth),
+// and --mx / --my move the light + glowing border drawn in style.css.
+const fineHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (fineHover && hasGsap && !prefersReduced) {
+  document.querySelectorAll(".project").forEach((card) => {
+    const inner = card.querySelector(".art") || card.querySelector(".project-image img");
+    const isImg = inner && inner.tagName === "IMG";
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      const px = x / r.width - 0.5, py = y / r.height - 0.5;
+      card.style.setProperty("--mx", `${x}px`);
+      card.style.setProperty("--my", `${y}px`);
+      gsap.to(card, { rotateY: px * 12, rotateX: -py * 10, transformPerspective: 900, duration: 0.5, ease: "power3.out", overwrite: "auto" });
+      if (inner) gsap.to(inner, { x: -px * 16, y: -py * 10, scale: isImg ? 1.08 : 1, duration: 0.6, ease: "power3.out", overwrite: "auto" });
+    });
+    card.addEventListener("pointerleave", () => {
+      gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.9, ease: "power3.out", overwrite: "auto" });
+      if (inner) gsap.to(inner, { x: 0, y: 0, scale: 1, duration: 0.9, ease: "power3.out", overwrite: "auto" });
+    });
+  });
+}
+
 // ================= HEADER / NAV =================
 const header = document.getElementById("header");
 const nav = document.getElementById("nav");
@@ -167,10 +204,13 @@ let lastY = window.scrollY;
 let sectionTops = [];
 function measureSections() {
   sectionTops = sections.map((s) => (s ? s.getBoundingClientRect().top + window.scrollY : Infinity));
+  if (typeof onScroll === "function") onScroll();
 }
 measureSections();
 window.addEventListener("resize", measureSections);
 window.addEventListener("load", measureSections);
+// pinned sections (GSAP) change the page height, so re-measure whenever ScrollTrigger refreshes
+if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", measureSections);
 
 function onScroll() {
   const y = window.scrollY;
@@ -179,17 +219,21 @@ function onScroll() {
   header.classList.toggle("scrolled", y > 40);
   // Hide header while scrolling down, show it again when scrolling up
   if (!menuOpen) header.classList.toggle("hidden", y > lastY && y > 300);
-  backTop.classList.toggle("show", y > 700);
+  // during the 3D ride the corner belongs to the chapter counter
+  const inRide = document.querySelector(".ride.is-live") && !document.body.classList.contains("past-ride");
+  backTop.classList.toggle("show", y > 700 && !inRide);
   lastY = y;
 
   // Highlight the nav link for the section in view
   const pos = y + window.innerHeight / 3;
-  let current = 0;
+  let current = -1;
   sectionTops.forEach((top, i) => { if (top <= pos) current = i; });
   navLinks.forEach((l, i) => l.classList.toggle("active", i === current));
 }
 window.addEventListener("scroll", onScroll, { passive: true });
 onScroll();
+// ride.js makes the intro section tall after this file runs, so measure again once everything is set up
+requestAnimationFrame(() => { measureSections(); onScroll(); });
 
 function setMenu(open) {
   burger.classList.toggle("open", open);
@@ -214,7 +258,8 @@ function setTheme(theme) {
   if (theme !== "light") theme = "dark"; // only accept known values from storage
   document.documentElement.setAttribute("data-theme", theme);
   themeIcon.setAttribute("href", theme === "light" ? "#i-moon" : "#i-sun");
-  document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "light" ? "#f7f8fa" : "#090a0c");
+  themeToggle.setAttribute("aria-label", theme === "light" ? "Switch to dark theme" : "Switch to light theme");
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "light" ? "#f3f1fb" : "#05061a");
   try { localStorage.setItem("theme", theme); } catch (e) {}
 }
 let savedTheme = "dark";
@@ -226,7 +271,7 @@ themeToggle.addEventListener("click", () => {
 
 // ================= TYPING EFFECT =================
 const typedEl = document.getElementById("typed");
-const words = ["WordPress", "WooCommerce", "React", "Next.js"];
+const words = ["Laravel", "React", "Next.js", "TypeScript", "WordPress"];
 let wordIndex = 0, charIndex = words[0].length, deleting = true;
 
 function type() {
@@ -253,73 +298,6 @@ function type() {
   }
 }
 setTimeout(type, 2600);
-
-// ================= HOVER EFFECTS (desktop only) =================
-if (canHover) {
-  // Spotlight glow + gradient border that follows the cursor
-  document.addEventListener("pointermove", (e) => {
-    const card = e.target.closest(".spotlight");
-    if (!card) return;
-    const r = card.getBoundingClientRect();
-    card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    card.style.setProperty("--my", `${e.clientY - r.top}px`);
-  });
-
-  if (hasGsap) {
-    // 3D tilt on project cards
-    document.querySelectorAll(".tilt").forEach((card) => {
-      card.addEventListener("pointermove", (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        gsap.to(card, { rotateY: px * 10, rotateX: -py * 10, y: -8, transformPerspective: 1000, duration: 0.6, ease: "power3.out" });
-      });
-      card.addEventListener("pointerleave", () => {
-        gsap.to(card, { rotateY: 0, rotateX: 0, y: 0, duration: 0.9, ease: "power3.out" });
-      });
-    });
-
-    // Magnetic buttons
-    document.querySelectorAll(".magnetic").forEach((el) => {
-      const strength = el.classList.contains("btn") ? 0.25 : 0.4;
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        gsap.to(el, {
-          x: (e.clientX - (r.left + r.width / 2)) * strength,
-          y: (e.clientY - (r.top + r.height / 2)) * strength,
-          duration: 0.4,
-          ease: "power3.out",
-        });
-      });
-      el.addEventListener("pointerleave", () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.9, ease: "elastic.out(1, 0.35)" });
-      });
-    });
-
-    // Custom cursor: dot follows instantly, ring trails behind
-    const dot = document.getElementById("cursorDot");
-    const ring = document.getElementById("cursorRing");
-    const label = document.getElementById("cursorLabel");
-    const dotX = gsap.quickTo(dot, "x", { duration: 0.1 });
-    const dotY = gsap.quickTo(dot, "y", { duration: 0.1 });
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3.out" });
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3.out" });
-    gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
-
-    window.addEventListener("pointermove", (e) => {
-      gsap.to([dot, ring], { opacity: 1, duration: 0.3, overwrite: "auto" });
-      dotX(e.clientX); dotY(e.clientY);
-      ringX(e.clientX); ringY(e.clientY);
-    });
-    document.addEventListener("mouseleave", () => gsap.to([dot, ring], { opacity: 0, duration: 0.3 }));
-    document.addEventListener("mouseover", (e) => {
-      const labelled = e.target.closest("[data-cursor]");
-      ring.classList.toggle("is-label", !!labelled);
-      label.textContent = labelled ? labelled.dataset.cursor : "";
-      ring.classList.toggle("is-hover", !labelled && !!e.target.closest("a, button, .tags li, .spotlight"));
-    });
-  }
-}
 
 // ================= MISC =================
 document.getElementById("year").textContent = new Date().getFullYear();

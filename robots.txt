@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# DOMAIN PLACEHOLDER: replace with your real URL
-Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://portfolio-muhammad-ayyan.vercel.app/sitemap.xml

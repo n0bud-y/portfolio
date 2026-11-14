@@ -1,4 +1,4 @@
-# Portfolio – Muhammad Ayan Asif
+# Portfolio – Muhammad Ayyan
 
 Static site (HTML / CSS / JS). No build step. Everything it needs is in this folder —
 no CDNs, so it works with a strict Content-Security-Policy.
@@ -9,7 +9,8 @@ index.html          page
 style.css           all styles
 script.js           projects data, filters, nav, theme, hover effects
 animations.js       GSAP + ScrollTrigger animations, Lenis smooth scroll
-scene3d.js          three.js 3D background (loaded on first interaction)
+ride.js             scroll "ride": progress, chapters, route minimap (owns the 3D track shape)
+scene3d.js          three.js 3D world: track, gates, </> mark (loaded when the page is idle)
 assets/vendor/      gsap, ScrollTrigger, lenis, three (version in file name)
 assets/fonts/       self-hosted Space Grotesk, Inter, Roboto Mono (woff2)
 assets/img/         social preview image + app icons
@@ -50,7 +51,7 @@ keep private files (the `.docx`, `temp.txt`) from being published.
 Upload these to `public_html/`:
 
 ```
-index.html 404.html style.css script.js animations.js scene3d.js
+index.html 404.html style.css script.js ride.js animations.js scene3d.js
 favicon.svg site.webmanifest robots.txt sitemap.xml .htaccess assets/
 ```
 
