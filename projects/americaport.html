@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AmericaPort — Multi-Vendor Marketplace Case Study · Muhammad Ayyan</title>
+  <meta name="description" content="How I built AmericaPort end to end: a Made-in-USA multi-vendor marketplace with Laravel, Stripe checkout, vendor commissions and payouts, and a Vue + Vuetify admin console." />
+  <meta name="author" content="Muhammad Ayyan" />
+  <link rel="canonical" href="https://portfolio-muhammad-ayyan.vercel.app/projects/americaport" />
+  <meta name="theme-color" content="#05061a" />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AmericaPort — Multi-Vendor Marketplace Case Study" />
+  <meta property="og:description" content="Laravel + Stripe + Vue/Vuetify: storefront, vendor payouts and a 13-module admin console, built end to end." />
+  <meta property="og:url" content="https://portfolio-muhammad-ayyan.vercel.app/projects/americaport" />
+  <meta property="og:image" content="https://portfolio-muhammad-ayyan.vercel.app/assets/img/projects/americaport/ad-dashboard.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+  <link rel="preload" href="../assets/fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../case-study.css" />
+
+  <script src="../assets/vendor/gsap-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/lenis-1.1.13.min.js" defer></script>
+  <script src="../case-study.js" defer></script>
+</head>
+<body class="cs">
+  <!-- Icons: Font Awesome Free 6.5.2 by @fontawesome (CC BY 4.0) + simple custom icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false"><symbol id="i-sun" viewBox="0 0 512 512"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></symbol><symbol id="i-arrow-up" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></symbol><symbol id="i-envelope" viewBox="0 0 512 512"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></symbol><symbol id="i-cart-shopping" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></symbol><symbol id="i-anchor" viewBox="0 0 576 512"><path d="M320 96a32 32 0 1 1 -64 0 32 32 0 1 1 64 0zm21.1 80C367 158.8 384 129.4 384 96c0-53-43-96-96-96s-96 43-96 96c0 33.4 17 62.8 42.9 80H224c-17.7 0-32 14.3-32 32s14.3 32 32 32h32V448H208c-53 0-96-43-96-96v-6.1l7 7c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L97 263c-9.4-9.4-24.6-9.4-33.9 0L7 319c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l7-7V352c0 88.4 71.6 160 160 160h80 80c88.4 0 160-71.6 160-160v-6.1l7 7c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-56-56c-9.4-9.4-24.6-9.4-33.9 0l-56 56c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l7-7V352c0 53-43 96-96 96H320V240h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H341.1z"/></symbol><symbol id="i-truck-moving" viewBox="0 0 640 512"><path d="M64 32C28.7 32 0 60.7 0 96V304v80 16c0 44.2 35.8 80 80 80c26.2 0 49.4-12.6 64-32c14.6 19.4 37.8 32 64 32c44.2 0 80-35.8 80-80c0-5.5-.6-10.8-1.6-16H416h33.6c-1 5.2-1.6 10.5-1.6 16c0 44.2 35.8 80 80 80s80-35.8 80-80c0-5.5-.6-10.8-1.6-16H608c17.7 0 32-14.3 32-32V288 272 261.7c0-9.2-3.2-18.2-9-25.3l-58.8-71.8c-10.6-13-26.5-20.5-43.3-20.5H480V96c0-35.3-28.7-64-64-64H64zM585 256H480V192h48.8c2.4 0 4.7 1.1 6.2 2.9L585 256zM528 368a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM176 400a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM80 368a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M3 3h18l1 6a3 3 0 0 1-5 2 3 3 0 0 1-5 0 3 3 0 0 1-5 0 3 3 0 0 1-5-2l1-6zm1 10.6V21h7v-5h2v5h7v-7.4a4.9 4.9 0 0 1-3 .4 4.9 4.9 0 0 1-3-1 4.9 4.9 0 0 1-3 1 4.9 4.9 0 0 1-3-1 4.9 4.9 0 0 1-4 .6z"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6z"/></symbol><symbol id="i-user-shield" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 7.5c2.3 0 4.3 1 5 2.5-1.2 1.8-3 3.2-5 3.9-2-.7-3.8-2.1-5-3.9.7-1.5 2.7-2.5 5-2.5z"/></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2H2V6zm0 5h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7zm3 4v2h5v-2H5z"/></symbol><symbol id="i-money" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M2 5h20v14H2V5zm10 3.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM4 7v2.5A2.5 2.5 0 0 0 6.5 7H4zm13.5 0A2.5 2.5 0 0 0 20 9.5V7h-2.5zM4 14.5V17h2.5A2.5 2.5 0 0 0 4 14.5zm16 0a2.5 2.5 0 0 0-2.5 2.5H20v-2.5z"/></symbol><symbol id="i-gauge" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 3a10 10 0 0 0-8.7 15h17.4A10 10 0 0 0 12 3zm0 3a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V7a1 1 0 0 1 1-1zm5.3 3.3a1 1 0 0 1 0 1.4l-3.4 3.4a2 2 0 1 1-1.4-1.4l3.4-3.4a1 1 0 0 1 1.4 0z"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2zm0 2.2 6.6 3.3L12 10.8 5.4 7.5 12 4.2zM5 9.1l6 3v7.6l-6-3V9.1zm14 0v7.6l-6 3v-7.6l6-3z"/></symbol><symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9.2a3 3 0 0 1 5.6 0H20v2h-1.2a3 3 0 0 1-5.6 0H4V6zm0 10h1.2a3 3 0 0 1 5.6 0H20v2h-9.2a3 3 0 0 1-5.6 0H4v-2z"/></symbol></svg>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="progress" id="progress"></div>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Muhammad Ayyan, back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Case study">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#flow" class="nav-link">How it works</a>
+        <a href="#storefront" class="nav-link">Storefront</a>
+        <a href="#console" class="nav-link">Admin</a>
+        <a href="#stack" class="nav-link">Stack</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to light theme">
+          <svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg>
+        </button>
+        <a href="../index.html#projects" class="btn btn-ghost btn-sm back-btn"><svg class="icon icon-back" aria-hidden="true"><use href="#i-arrow-right"></use></svg> <span>All projects</span></a>
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ========== HERO ========== -->
+    <section class="cs-hero">
+      <div class="container cs-hero-grid">
+        <div class="cs-hero-copy">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span aria-hidden="true">/</span><a href="../index.html#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">AmericaPort</span></nav>
+          <p class="kicker" data-hero>Case study <span class="dot-sep">·</span> Multi-vendor marketplace</p>
+          <h1 class="cs-title" data-hero>America<span class="glow">Port.</span></h1>
+          <p class="cs-lead" data-hero>
+            A Made-in-USA marketplace where independent American sellers list their products, customers pay once with
+            Stripe, and the platform splits every order between vendors, with a full admin console to run it all.
+            <strong>I built it end to end.</strong>
+          </p>
+          <dl class="facts" data-hero>
+            <div><dt>Role</dt><dd>Full-stack developer</dd></div>
+            <div><dt>Team</dt><dd>Solo · Ink Pixel Studios</dd></div>
+            <div><dt>Year</dt><dd>2026</dd></div>
+            <div><dt>Type</dt><dd>Multi-vendor e-commerce</dd></div>
+          </dl>
+          <ul class="tags" data-hero>
+            <li>Laravel</li><li>PHP 8.4</li><li>Vue 2</li><li>Vuetify</li><li>Stripe</li><li>MySQL</li><li>Bootstrap</li><li>jQuery</li>
+          </ul>
+          <p class="demo-note" data-hero><svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg> Private client project · live demo &amp; walkthrough available on request</p>
+        </div>
+
+        <!-- Layered devices: storefront, admin console and phone (tilts with the mouse) -->
+        <div class="devices" id="devices" aria-label="AmericaPort storefront, admin console and mobile screenshots">
+          <figure class="frame dev-store zoomable-wrap">
+            <div class="frame-bar"><i></i><i></i><i></i><span>americaport · storefront</span></div>
+            <img src="../assets/img/projects/americaport/sf-home.webp" alt="AmericaPort storefront home page" width="1440" height="900" class="zoomable" fetchpriority="high" />
+          </figure>
+          <figure class="frame dev-admin">
+            <div class="frame-bar"><i></i><i></i><i></i><span>admin console</span></div>
+            <img src="../assets/img/projects/americaport/ad-dashboard.webp" alt="AmericaPort admin dashboard with sales KPIs and charts" width="1440" height="900" class="zoomable" />
+          </figure>
+          <figure class="phone dev-phone">
+            <img src="../assets/img/projects/americaport/m-home.webp" alt="AmericaPort storefront on a phone" width="390" height="844" class="zoomable" />
+          </figure>
+          <span class="dev-glow" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <!-- System at a glance (facts about the build, not business results) -->
+      <div class="container">
+        <ul class="numbers" data-reveal>
+          <li><b data-count="2">2</b><span>apps in one Laravel codebase: storefront + admin SPA</span></li>
+          <li><b data-count="13">13</b><span>admin modules, from orders to homepage settings</span></li>
+          <li><b data-count="55">55</b><span>granular permissions behind 3 roles</span></li>
+          <li><b data-count="3">3</b><span>tier "Made in USA" verification badges</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 01 OVERVIEW ========== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <p class="section-label" data-reveal><span>01</span> Overview</p>
+        <h2 class="section-title" data-reveal>One checkout. <span class="glow">Many sellers.</span></h2>
+
+        <div class="overview-grid">
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag">The challenge</span>
+            <h3>A marketplace, not just a store</h3>
+            <p>
+              The client wanted a home for American-made products where many independent sellers list in one place.
+              That means more than a shop theme:
+            </p>
+            <ul class="bullets">
+              <li>Buyers need to trust that "Made in USA" really means it.</li>
+              <li>Customers pay once, even when the cart holds items from several sellers.</li>
+              <li>The platform keeps its commission and pays every seller accurately.</li>
+              <li>Each seller should only see and manage their own products and orders.</li>
+              <li>The team edits the homepage and store details without a developer.</li>
+            </ul>
+          </article>
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag ok">The solution</span>
+            <h3>Two apps, one Laravel core</h3>
+            <p>
+              I built a fast, SEO-friendly <b>storefront</b> rendered by Laravel, and a separate <b>admin console</b>
+              as a Vue 2 + Vuetify single-page app talking to the same Laravel backend through a JSON API.
+            </p>
+            <ul class="bullets">
+              <li>3-tier verification badge on every product, shown as a colored star.</li>
+              <li>Stripe card checkout with state-based tax and a clear 3-step flow.</li>
+              <li>Orders split per vendor; an order completes only when every vendor has fulfilled.</li>
+              <li>Per-item commission ledger and manual payouts with full history.</li>
+              <li>Role &amp; permission system reused for vendors, plus a no-code homepage builder.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 02 HOW IT WORKS ========== -->
+    <section class="section" id="flow">
+      <div class="container">
+        <p class="section-label" data-reveal><span>02</span> How it works</p>
+        <h2 class="section-title" data-reveal>The complete flow, <span class="glow">end to end.</span></h2>
+        <p class="section-intro" data-reveal>Follow one product from a seller's dashboard to a customer's door, and the money back to the seller.</p>
+
+        <ol class="flow" id="flowList">
+          <li class="flow-line" aria-hidden="true"><span class="flow-fill" id="flowFill"></span></li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>1</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-store"></use></svg> Vendor</span>
+              <h3>A seller lists a product</h3>
+              <p>Vendors log in to the same console with a limited role. They add the product, choose its "Made in USA" tier, pick categories and generate size / color variations, each with its own price, image and stock.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/ad-product-edit.webp" alt="Product editor with vendor, Made-in-USA badge and variations" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>2</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-user-shield"></use></svg> Admin</span>
+              <h3>The catalog goes live</h3>
+              <p>Admins publish or feature products, organise the category tree and control which collections appear on the homepage. The storefront updates the moment they save.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/ad-products.webp" alt="Admin product list with type, published state and vendor" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>3</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg> Customer</span>
+              <h3>Shoppers find &amp; trust it</h3>
+              <p>Search with a category dropdown, filter by price, category, size, stock and sale, then pick a variation on the product page. The verification star tells them exactly how American-made it is.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/sf-product.webp" alt="Product page with size variations and add to cart" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>4</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-credit-card"></use></svg> Checkout</span>
+              <h3>One payment with Stripe</h3>
+              <p>A 3-step Cart → Checkout → Confirmation flow. Tax is calculated from the shipping state, shipping is free because sellers ship directly, and the card is charged securely by Stripe.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/sf-checkout.webp" alt="Checkout with shipping form, order summary and Stripe card fields" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>5</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-truck-moving"></use></svg> Fulfilment</span>
+              <h3>Each vendor ships their part</h3>
+              <p>The order is split by vendor. Every vendor marks their items complete; the admin sees "Waiting for vendors: 0 of 1" and can only close the order once every vendor has fulfilled. Orders can be downloaded for records.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/ad-order.webp" alt="Order detail with vendor progress, Stripe payment status and shipping details" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>6</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-money"></use></svg> Finance</span>
+              <h3>Commission &amp; payouts</h3>
+              <p>Every sold item lands in the vendor's ledger with sale, commission and "vendor gets". Admins pay selected items or everything unpaid, record the transfer, and the payout history shows exactly which items it covered.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/americaport/ad-vendor-finance.webp" alt="Vendor finance page with ledger, commission and payout buttons" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+        </ol>
+
+        <!-- Money flow -->
+        <div class="money glass" data-reveal>
+          <div class="money-head">
+            <h3>Where the money goes</h3>
+            <p>Customers pay the platform once. The platform keeps its commission and pays each vendor what they earned.</p>
+          </div>
+          <div class="money-track" aria-label="Customer pays via Stripe, AmericaPort keeps the commission, vendors receive payouts">
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg></span><b>Customer</b><small>pays once</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-credit-card"></use></svg></span><b>Stripe</b><small>card payment</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node hub"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-anchor"></use></svg></span><b>AmericaPort</b><small>keeps commission %</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-store"></use></svg></span><b>Vendors</b><small>bank / PayPal payout</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 03 STOREFRONT ========== -->
+    <section class="section" id="storefront">
+      <div class="container">
+        <p class="section-label" data-reveal><span>03</span> Storefront</p>
+        <h2 class="section-title" data-reveal>Built to sell, <span class="glow">built to trust.</span></h2>
+
+        <div class="sf-grid">
+          <div class="sf-preview" data-reveal>
+            <figure class="frame scroller" id="scroller" tabindex="0" aria-label="Full home page, scrolls on hover">
+              <div class="frame-bar"><i></i><i></i><i></i><span>americaport.com</span><em class="scroll-hint">Hover to scroll</em></div>
+              <div class="scroller-view"><img src="../assets/img/projects/americaport/sf-home-long.webp" alt="The full AmericaPort home page from banner to footer" width="864" height="4788" loading="lazy" /></div>
+            </figure>
+          </div>
+
+          <div class="sf-features" data-reveal>
+            <div class="badges">
+              <div class="badge-tier"><span class="star s1">★</span><b>Made in USA</b><small>all parts &amp; assembly</small></div>
+              <div class="badge-tier"><span class="star s2">★</span><b>Domestic &amp; foreign parts</b><small>made in the USA</small></div>
+              <div class="badge-tier"><span class="star s3">☆</span><b>Assembled in USA</b><small>final assembly here</small></div>
+            </div>
+            <ul class="feature-list">
+              <li><b>3-tier verification badges</b> set per product in the console and shown as colored stars across the store.</li>
+              <li><b>Search + category dropdown</b> in the header, and a filter sidebar: price range, categories, sizes, in stock, on sale, sort.</li>
+              <li><b>Variation picker</b> with live stock, add to cart or buy now, related products and customer reviews.</li>
+              <li><b>3-step checkout</b> with state tax, free seller shipping and Stripe card payments.</li>
+              <li><b>Community pages</b>: the AmericaPort Fund, supported organizations and seller stories.</li>
+              <li><b>Contact form with topics</b> (order issue, seller application, media) that lands in the console's Inquiries, plus a newsletter.</li>
+              <li><b>Accounts, help center, FAQs, returns &amp; policies</b>, all responsive down to phones.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery" data-reveal>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>shop &amp; filters</span></div><img src="../assets/img/projects/americaport/sf-shop.webp" alt="Shop page with filters and product grid" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>categories</span></div><img src="../assets/img/projects/americaport/sf-categories.webp" alt="Category overview page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>about &amp; impact</span></div><img src="../assets/img/projects/americaport/sf-about.webp" alt="About page explaining AmericaPort's community mission" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>cart</span></div><img src="../assets/img/projects/americaport/sf-cart.webp" alt="Shopping cart" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+        </div>
+
+        <div class="phones" data-reveal>
+          <figure class="phone"><img src="../assets/img/projects/americaport/m-home.webp" alt="Home page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <figure class="phone up"><img src="../assets/img/projects/americaport/m-product.webp" alt="Product page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <figure class="phone"><img src="../assets/img/projects/americaport/m-shop.webp" alt="Shop page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <p class="phones-cap">Fully responsive: the same store on a 390px phone.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 04 ADMIN CONSOLE ========== -->
+    <section class="section" id="console">
+      <div class="container">
+        <p class="section-label" data-reveal><span>04</span> Admin console</p>
+        <h2 class="section-title" data-reveal>13 modules. <span class="glow">One console.</span></h2>
+        <p class="section-intro" data-reveal>A Vue 2 + Vuetify single-page app on top of the Laravel API. Pick a module:</p>
+
+        <div class="console glass" data-reveal>
+          <div class="console-tabs" role="tablist" aria-label="Admin modules">
+            <button role="tab" class="ctab active" id="tab-dash" aria-controls="p-dash" aria-selected="true"><svg class="icon" aria-hidden="true"><use href="#i-gauge"></use></svg> Dashboard</button>
+            <button role="tab" class="ctab" id="tab-orders" aria-controls="p-orders" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-cart-shopping"></use></svg> Orders</button>
+            <button role="tab" class="ctab" id="tab-finance" aria-controls="p-finance" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-money"></use></svg> Finance &amp; payouts</button>
+            <button role="tab" class="ctab" id="tab-products" aria-controls="p-products" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-box"></use></svg> Products</button>
+            <button role="tab" class="ctab" id="tab-access" aria-controls="p-access" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-user-shield"></use></svg> Users &amp; access</button>
+            <button role="tab" class="ctab" id="tab-settings" aria-controls="p-settings" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-sliders"></use></svg> Homepage builder</button>
+          </div>
+
+          <div class="console-panels">
+            <section role="tabpanel" class="cpanel active" id="p-dash" aria-labelledby="tab-dash">
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/dashboard</span></div><img src="../assets/img/projects/americaport/ad-dashboard.webp" alt="Admin dashboard with KPI cards and charts" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Know the store at a glance</h3>
+                <ul class="bullets">
+                  <li>KPI cards: total sales, total, paid and delivered orders.</li>
+                  <li>30-day revenue chart and orders per month for the last 12 months.</li>
+                  <li>Revenue by period (week, month, 3 months, year), paid orders only.</li>
+                  <li>Quick actions and a "store at a glance" summary of catalog and audience.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-orders" aria-labelledby="tab-orders" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/orders</span></div><img src="../assets/img/projects/americaport/ad-orders.webp" alt="Orders list with vendor progress and payment status" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Orders that understand vendors</h3>
+                <ul class="bullets">
+                  <li>Filter by text, order status, payment status and date range.</li>
+                  <li>"Vendor progress" column, e.g. 0/3 completed, for multi-seller orders.</li>
+                  <li>Order detail with customer &amp; shipping info, tax, Stripe payment status and per-item vendor status.</li>
+                  <li>Status changes are gated until every vendor has fulfilled; orders can be downloaded.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/americaport/ad-order.webp" data-alt="Order detail page">See an order detail →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-finance" aria-labelledby="tab-finance" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/finance</span></div><img src="../assets/img/projects/americaport/ad-finance.webp" alt="Finance overview with money flow and per-vendor balances" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>A real ledger, not a spreadsheet</h3>
+                <ul class="bullets">
+                  <li>Money flow summary: customers paid, admin commission, paid to vendors, still owed.</li>
+                  <li>Per-vendor table with commission rate, sales, admin cut, paid out, in payout and owed.</li>
+                  <li>Vendor page with an item-level ledger, payout details (bank / PayPal) and "pay selected" / "pay all unpaid".</li>
+                  <li>Payout history with Pending / Paid / Cancelled tabs; expand a payout to see the exact items it covers.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/americaport/ad-payouts.webp" data-alt="Payouts page">See payouts →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-products" aria-labelledby="tab-products" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/products/edit</span></div><img src="../assets/img/projects/americaport/ad-product-edit.webp" alt="Product editor" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>A product builder with variations</h3>
+                <ul class="bullets">
+                  <li>Normal or variational products, assigned to a vendor or kept as the store's own.</li>
+                  <li>Labels (size, color…) → "Generate variations" builds every combination, each with price, image, stock and a default.</li>
+                  <li>"Made by" tier, discount %, similar products, category tree and a rich-text (CKEditor) description.</li>
+                  <li>Publish / feature switches; categories with parent &amp; sub-categories; reusable labels.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/americaport/ad-product-edit-full.webp" data-alt="Full product editor with variations">See the full editor →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-access" aria-labelledby="tab-access" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/roles</span></div><img src="../assets/img/projects/americaport/ad-role-vendor.webp" alt="Vendor role with its permissions" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Everyone sees only what they should</h3>
+                <ul class="bullets">
+                  <li>Users split into customers, vendors and administrators.</li>
+                  <li>55 granular permissions (view / create / edit / delete per module) grouped into roles.</li>
+                  <li>The Vendor role gets 8 of them: their own products, orders, labels, finance and payouts.</li>
+                  <li>Engagement tools: contact inquiries, newsletter subscribers with CSV export, and review moderation.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/americaport/ad-users.webp" data-alt="Users list (demo data)">See users →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-settings" aria-labelledby="tab-settings" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/backend/settings</span></div><img src="../assets/img/projects/americaport/ad-settings.webp" alt="Homepage settings with section toggles and banner editor" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Edit the homepage without code</h3>
+                <ul class="bullets">
+                  <li>Homepage sections in order, each with a show / hide switch.</li>
+                  <li>Banner image upload, headings, highlighted title, paragraph and button link.</li>
+                  <li>Review widget: best-rated automatically or hand-picked, how many and minimum rating.</li>
+                  <li>Homepage navigation (category / product links with images) and store contact &amp; social links.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/americaport/ad-settings-full.webp" data-alt="Full homepage builder">See the full builder →</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 05 UNDER THE HOOD ========== -->
+    <section class="section" id="stack">
+      <div class="container">
+        <p class="section-label" data-reveal><span>05</span> Under the hood</p>
+        <h2 class="section-title" data-reveal>How it's <span class="glow">built.</span></h2>
+
+        <div class="arch" data-reveal>
+          <div class="arch-col">
+            <span class="arch-cap">Clients</span>
+            <div class="arch-box glass">
+              <b>Storefront</b>
+              <small>Laravel Blade · Bootstrap · jQuery · Swiper · AOS · Fancybox</small>
+            </div>
+            <div class="arch-box glass">
+              <b>Admin console (SPA)</b>
+              <small>Vue 2.6 · Vuetify · Vue Router · Vuex · Axios · CKEditor</small>
+            </div>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>HTML pages</span><span>JSON API</span></div>
+          <div class="arch-col core">
+            <span class="arch-cap">Server</span>
+            <div class="arch-box glass hub">
+              <b>Laravel · PHP 8.4</b>
+              <ul>
+                <li>Routes &amp; controllers for store + API</li>
+                <li>Eloquent models &amp; relationships</li>
+                <li>Session auth, CSRF protection</li>
+                <li>Role &amp; permission checks</li>
+                <li>Cart, tax &amp; order splitting</li>
+                <li>Commission ledger &amp; payouts</li>
+              </ul>
+            </div>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>queries</span><span>payments</span></div>
+          <div class="arch-col">
+            <span class="arch-cap">Services</span>
+            <div class="arch-box glass"><b>MySQL</b><small>products, orders, vendors, ledger</small></div>
+            <div class="arch-box glass"><b>Stripe</b><small>card payments</small></div>
+            <div class="arch-box glass"><b>LiteSpeed hosting</b><small>file storage for product images</small></div>
+          </div>
+        </div>
+
+        <div class="model glass" data-reveal>
+          <h3>Core data model</h3>
+          <div class="model-row">
+            <span class="ent">User <small>role: customer / vendor / admin</small></span>
+            <span class="rel">sells</span>
+            <span class="ent">Product <small>type, made-by tier, vendor</small></span>
+            <span class="rel">has</span>
+            <span class="ent">Variation <small>label values, price, stock</small></span>
+          </div>
+          <div class="model-row">
+            <span class="ent">Order <small>Stripe payment, tax, status</small></span>
+            <span class="rel">contains</span>
+            <span class="ent">Order item <small>vendor, vendor status</small></span>
+            <span class="rel">earns</span>
+            <span class="ent">Ledger entry <small>sale, commission, vendor gets</small></span>
+            <span class="rel">paid by</span>
+            <span class="ent">Payout <small>pending / paid / cancelled</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 06 HIGHLIGHTS ========== -->
+    <section class="section" id="highlights">
+      <div class="container">
+        <p class="section-label" data-reveal><span>06</span> Highlights</p>
+        <h2 class="section-title" data-reveal>What I'm <span class="glow">proud of.</span></h2>
+        <div class="hl-grid">
+          <article class="glass hl" data-reveal><span class="hl-num">01</span><h3>Item-level money tracking</h3><p>Commission is recorded per order item, so every payout traces back to the exact products it pays for: no guesswork when sellers ask "what is this for?".</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">02</span><h3>Multi-vendor order logic</h3><p>One customer order, many sellers. Vendor progress is tracked per item and the order can't be closed until every vendor has fulfilled their part.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">03</span><h3>One permission system for all</h3><p>Instead of a separate vendor portal, vendors use the same console with a scoped role: 8 of 55 permissions, only their own data.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">04</span><h3>Variation generator</h3><p>Pick label values like sizes and colors and the console builds every combination with its own price, image and stock.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">05</span><h3>No-code homepage</h3><p>Sections, banner, navigation, reviews widget and store details are all editable and go live on save: the client never needs a developer for content.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">06</span><h3>Trust built into the UI</h3><p>The 3-tier "Made in USA" system runs from the product editor to colored stars on every card, so the brand promise is visible everywhere.</p></article>
+        </div>
+
+        <p class="privacy" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg> Screenshots are from the project's staging environment. Customer names, emails and phone numbers were replaced with demo data, and test entries were hidden.</p>
+      </div>
+    </section>
+
+    <!-- ========== NEXT ========== -->
+    <section class="section cs-next">
+      <div class="container cs-next-inner glass" data-reveal>
+        <div>
+          <p class="kicker">Like what you see?</p>
+          <h2 class="cs-next-title">Let's build something <span class="glow">great together.</span></h2>
+        </div>
+        <div class="cs-next-actions">
+          <!-- TODO: replace with your professional email -->
+          <a href="mailto:you@example.com" class="btn btn-primary"><svg class="icon" aria-hidden="true"><use href="#i-envelope"></use></svg> <span>Email me</span></a>
+          <a href="../index.html#projects" class="btn btn-ghost"><span>More projects</span> <svg class="icon icon-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../index.html" class="logo" aria-label="Back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <p class="footer-tag">Laravel · React · Next.js · WordPress</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/muhammad-ayyan1/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/n0bud-y" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year">2026</span> Muhammad Ayyan · Karachi, Pakistan</p>
+    </div>
+  </footer>
+
+  <a href="#main" class="back-top" id="backTop" aria-label="Back to top"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up"></use></svg></a>
+
+  <!-- Lightbox -->
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot preview">
+    <button class="lb-close icon-btn" id="lbClose" aria-label="Close preview">✕</button>
+    <img id="lbImg" src="data:," alt="" />
+    <p class="lb-cap" id="lbCap"></p>
+  </dialog>
+</body>
+</html>

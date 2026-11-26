@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polygon PT — Multi-Branch Clinic Website Case Study · Muhammad Ayyan</title>
+  <meta name="description" content="How I designed and built Polygon PT: a custom WordPress theme for a physical therapy group with 8 branches, 26 page templates, shared condition pages and ACF-managed content." />
+  <meta name="author" content="Muhammad Ayyan" />
+  <link rel="canonical" href="https://portfolio-muhammad-ayyan.vercel.app/projects/polygon-pt" />
+  <meta name="theme-color" content="#05061a" />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Polygon PT — Multi-Branch Clinic Website Case Study" />
+  <meta property="og:description" content="8 clinic branches, 26 custom templates, one design system: designed and built in WordPress." />
+  <meta property="og:url" content="https://portfolio-muhammad-ayyan.vercel.app/projects/polygon-pt" />
+  <meta property="og:image" content="https://portfolio-muhammad-ayyan.vercel.app/assets/img/projects/polygon/pg-home.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+  <link rel="preload" href="../assets/fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../case-study.css" />
+
+  <script src="../assets/vendor/gsap-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/lenis-1.1.13.min.js" defer></script>
+  <script src="../case-study.js" defer></script>
+</head>
+<body class="cs">
+  <!-- Icons: Font Awesome Free 6.5.2 by @fontawesome (CC BY 4.0) + simple custom icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false"><symbol id="i-sun" viewBox="0 0 512 512"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></symbol><symbol id="i-arrow-up" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></symbol><symbol id="i-envelope" viewBox="0 0 512 512"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></symbol><symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 2.1c-1.2 1.4-2.1 3.7-2.4 6.4H4.1A8 8 0 0 1 11 4.1zm2 0a8 8 0 0 1 6.9 6.4h-4.5c-.3-2.7-1.2-5-2.4-6.4zM10.6 10.5c.4-3.2 1.4-5.2 1.4-5.2s1 2 1.4 5.2h-2.8zm-6.5 3h4.5c.3 2.7 1.2 5 2.4 6.4a8 8 0 0 1-6.9-6.4zm6.5 0h2.8c-.4 3.2-1.4 5.2-1.4 5.2s-1-2-1.4-5.2zm4.8 0h4.5a8 8 0 0 1-6.9 6.4c1.2-1.4 2.1-3.7 2.4-6.4z"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM7 12v2h10v-2H7zm0 4v2h7v-2H7z"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-8.2 9.1L2 12l10 5 10-5-1.8-.9L12 15.2 3.8 11.1zm0 5L2 17l10 5 10-5-1.8-.9L12 20.2 3.8 16.1z"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 4.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/></symbol></svg>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="progress" id="progress"></div>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Muhammad Ayyan, back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Case study">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#tree" class="nav-link">Site tree</a>
+        <a href="#branches" class="nav-link">Branches</a>
+        <a href="#system" class="nav-link">Design system</a>
+        <a href="#pages" class="nav-link">Pages</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to light theme">
+          <svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg>
+        </button>
+        <a href="../index.html#projects" class="btn btn-ghost btn-sm back-btn"><svg class="icon icon-back" aria-hidden="true"><use href="#i-arrow-right"></use></svg> <span>All projects</span></a>
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ========== HERO ========== -->
+    <section class="cs-hero">
+      <div class="container cs-hero-grid">
+        <div class="cs-hero-copy">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span aria-hidden="true">/</span><a href="../index.html#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">Polygon PT</span></nav>
+          <p class="kicker" data-hero>Case study <span class="dot-sep">·</span> Multi-branch clinic website</p>
+          <h1 class="cs-title" data-hero>Polygon<span class="glow"> PT.</span></h1>
+          <p class="cs-lead" data-hero>
+            A physical therapy group with <b>8 clinic branches</b> across Houston, Texas. Every branch gets its own page,
+            address, sections and local SEO, all tied to shared condition pages and one booking flow.
+            <strong>I designed the structure and the UI, and built it as a custom WordPress theme.</strong>
+          </p>
+          <dl class="facts" data-hero>
+            <div><dt>Role</dt><dd>UI/UX design + development</dd></div>
+            <div><dt>Client</dt><dd>Polygon PT · Houston, TX</dd></div>
+            <div><dt>Platform</dt><dd>Custom WordPress theme</dd></div>
+            <div><dt>Scope</dt><dd>26 templates · 8 branches</dd></div>
+          </dl>
+          <ul class="tags" data-hero>
+            <li>WordPress</li><li>Custom theme</li><li>ACF</li><li>PHP</li><li>Bootstrap</li><li>GSAP</li><li>Swiper</li><li>AOS</li><li>Yoast SEO</li><li>Contact Form 7</li>
+          </ul>
+          <p class="demo-note" data-hero><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> Live at polygonpt.com</p>
+        </div>
+
+        <div class="devices" id="devices" aria-label="Polygon PT home page, Katy branch page and mobile view">
+          <figure class="frame dev-store">
+            <div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com</span></div>
+            <img src="../assets/img/projects/polygon/pg-home.webp" alt="Polygon PT home page hero" width="1440" height="900" class="zoomable" fetchpriority="high" />
+          </figure>
+          <figure class="frame dev-admin">
+            <div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/katy</span></div>
+            <img src="../assets/img/projects/polygon/pg-br-katy.webp" alt="Katy branch page with address, phone and hours" width="1440" height="900" class="zoomable" />
+          </figure>
+          <figure class="phone dev-phone">
+            <img src="../assets/img/projects/polygon/m-pg-home.webp" alt="Polygon PT on a phone" width="390" height="844" class="zoomable" />
+          </figure>
+          <span class="dev-glow" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="container">
+        <ul class="numbers" data-reveal>
+          <li><b data-count="8">8</b><span>clinic branches, each with its own page and template</span></li>
+          <li><b data-count="26">26</b><span>custom page templates in the theme</span></li>
+          <li><b data-count="7">7</b><span>condition pages, from knee to shoulder pain</span></li>
+          <li><b data-count="48">48</b><span>branch → condition links weaving the local SEO</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 01 OVERVIEW ========== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <p class="section-label" data-reveal><span>01</span> Overview</p>
+        <h2 class="section-title" data-reveal>One brand. <span class="glow">Eight front doors.</span></h2>
+        <div class="overview-grid">
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag">The challenge</span>
+            <h3>Eight clinics, one website</h3>
+            <p>Patients search locally: "physical therapy in Katy", "PT near Sugar Land". Each clinic needed to rank and convert on its own, without eight separate websites.</p>
+            <ul class="bullets">
+              <li>Every branch has its own address, phone, email, hours and team.</li>
+              <li>Branches serve different communities and insurance mixes.</li>
+              <li>Conditions (knee, back, shoulder…) are the same everywhere and shouldn't be written 8 times.</li>
+              <li>The clinic team must update content without a developer.</li>
+            </ul>
+          </article>
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag ok">What I designed &amp; built</span>
+            <h3>A tree, not a pile of pages</h3>
+            <p>I designed the <b>site structure</b> first: a hub for each branch, shared condition pages they all link to, and conversion pages every path ends in. Then I designed the UI and built it as a <b>custom WordPress theme</b>.</p>
+            <ul class="bullets">
+              <li>A page template per branch, built from a shared library of section modules.</li>
+              <li>Content in ACF fields, so the clinic edits text, photos and details itself.</li>
+              <li>Each branch combines only the modules it needs, in its own order.</li>
+              <li>Every branch links to every condition page: strong internal linking for local SEO.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 02 SITE TREE ========== -->
+    <section class="section" id="tree">
+      <div class="container">
+        <p class="section-label" data-reveal><span>02</span> The site tree</p>
+        <h2 class="section-title" data-reveal>The structure <span class="glow">I designed.</span></h2>
+        <p class="section-intro" data-reveal>Every page on polygonpt.com and how it hangs together. File names are the real page templates in the theme.</p>
+
+        <div class="tree" data-reveal>
+          <div class="tree-root">
+            <span class="tr-icon"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></span>
+            <b>polygonpt.com</b><code>home.php</code>
+          </div>
+          <div class="tree-trunk" aria-hidden="true"></div>
+          <ul class="tree-groups">
+            <li class="tg tg-branches">
+              <div class="tg-head"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Locations <em>8 branches</em></div>
+              <ul class="tg-list"><li class="tn tn-branch"><b>Sugar Land</b><code>sugar-land-physical-therapy.php</code></li><li class="tn tn-branch"><b>Katy</b><code>katy.php</code></li><li class="tn tn-branch"><b>Pearland</b><code>pearland.php</code></li><li class="tn tn-branch"><b>Heights</b><code>north-loop.php</code></li><li class="tn tn-branch"><b>Richmond</b><code>richmond.php</code></li><li class="tn tn-branch"><b>West Houston</b><code>west-houston.php</code></li><li class="tn tn-branch"><b>Galleria</b><code>galleria.php</code></li><li class="tn tn-branch"><b>Missouri City</b><code>missouri.php</code></li></ul>
+            </li>
+            <li class="tg">
+              <div class="tg-head"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg> Services <em>services.php</em></div>
+              <ul class="tg-list">
+                <li class="tn"><b>Knee Pain Relief</b><code>knee-pain-relief.php</code></li><li class="tn"><b>Elbow Pain Relief</b><code>elbow-pain-relief.php</code></li><li class="tn"><b>Upper &amp; Lower Back</b><code>upper-&amp;-lower-back….php</code></li><li class="tn"><b>Wrist Pain Relief</b><code>wrist-pain-relief.php</code></li><li class="tn"><b>Shoulder Pain Relief</b><code>shoulder-pain-relief.php</code></li><li class="tn"><b>Ankle Pain Relief</b><code>ankle-pain-relief.php</code></li><li class="tn"><b>Hip Pain Relief</b><code>hip-pain-relief.php</code></li>
+                <li class="tn tn-special"><b>Focused Shockwave Therapy</b><code>focused-shockwave-therapy.php</code></li>
+              </ul>
+            </li>
+            <li class="tg">
+              <div class="tg-head"><svg class="icon" aria-hidden="true"><use href="#i-bolt"></use></svg> Conversion <em>every path ends here</em></div>
+              <ul class="tg-list"><li class="tn tn-cta"><b>Book Now</b><code>book-now.php</code></li><li class="tn"><b>Contact Us</b><code>contact.php</code></li><li class="tn"><b>Thank You</b><code>thank-you.php</code></li></ul>
+            </li>
+            <li class="tg">
+              <div class="tg-head"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg> Brand &amp; content</div>
+              <ul class="tg-list"><li class="tn"><b>Group Practice</b><code>group-practice.php</code></li><li class="tn"><b>Our App</b><code>our-app.php</code></li><li class="tn"><b>Shop</b><code>shop.php</code></li><li class="tn"><b>Blog</b><code>blog.php</code></li><li class="tn"><b>FAQs</b><code>faq.php</code></li></ul>
+            </li>
+          </ul>
+          <p class="tree-legend"><span class="lg lg-b"></span> branch hub <span class="lg lg-s"></span> specialty service <span class="lg lg-c"></span> conversion page · all 26 templates live in my custom theme</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 03 BRANCH EXPLORER ========== -->
+    <section class="section" id="branches">
+      <div class="container">
+        <p class="section-label" data-reveal><span>03</span> Branch explorer</p>
+        <h2 class="section-title" data-reveal>Same system, <span class="glow">eight pages.</span></h2>
+        <p class="section-intro" data-reveal>Pick a branch to see its page blueprint: the modules it uses, in the order it uses them.</p>
+
+        <div class="console glass explorer" data-reveal>
+          <div class="console-tabs" role="tablist" aria-label="Branches">
+            <button role="tab" class="ctab active" id="tab-sugar-land" aria-controls="p-sugar-land" aria-selected="true"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Sugar Land</button>
+            <button role="tab" class="ctab" id="tab-katy" aria-controls="p-katy" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Katy</button>
+            <button role="tab" class="ctab" id="tab-pearland" aria-controls="p-pearland" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Pearland</button>
+            <button role="tab" class="ctab" id="tab-heights" aria-controls="p-heights" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Heights</button>
+            <button role="tab" class="ctab" id="tab-richmond" aria-controls="p-richmond" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Richmond</button>
+            <button role="tab" class="ctab" id="tab-west-houston" aria-controls="p-west-houston" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> West Houston</button>
+            <button role="tab" class="ctab" id="tab-galleria" aria-controls="p-galleria" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Galleria</button>
+            <button role="tab" class="ctab" id="tab-missouri-city" aria-controls="p-missouri-city" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Missouri City</button>
+          </div>
+          <div class="console-panels">
+            <section role="tabpanel" class="cpanel bx active" id="p-sugar-land" aria-labelledby="tab-sugar-land">
+              <div class="bx-blueprint" aria-label="Sugar Land page blueprint">
+                <span class="bx-cap">Page blueprint · 10 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-ins"><span>02</span>Accepted insurance logos</li><li class="bp bp-why"><span>03</span>Why this clinic (3 reasons)</li><li class="bp bp-cond"><span>04</span>Condition carousel</li><li class="bp bp-comm"><span>05</span>South Asian &amp; Indian community</li><li class="bp bp-rehab"><span>06</span>Specialized rehab methods</li><li class="bp bp-opts"><span>07</span>Insurance-friendly options</li><li class="bp bp-facility"><span>08</span>Outpatient facility story</li><li class="bp bp-cta"><span>09</span>Start-your-journey CTA</li><li class="bp bp-form"><span>10</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/sugar-land-physical-therapy/</span></div><img src="../assets/img/projects/polygon/pg-br-sugar-land-physical-therapy.webp" alt="Sugar Land branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Sugar Land</h3>
+                <p class="bx-h1">Polygon PT Sugar Land · Physical Therapy &amp; Sports Rehabilitation Center</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 15591 Creekbend Dr #201, Sugar Land, TX 77478</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/sugar-land-physical-therapy.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports rehab</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-katy" aria-labelledby="tab-katy" hidden>
+              <div class="bx-blueprint" aria-label="Katy page blueprint">
+                <span class="bx-cap">Page blueprint · 11 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-why"><span>02</span>Why this clinic (3 reasons)</li><li class="bp bp-cond"><span>03</span>Condition carousel</li><li class="bp bp-ins"><span>04</span>Accepted insurance logos</li><li class="bp bp-comm"><span>05</span>South Asian &amp; Indian community</li><li class="bp bp-opts"><span>06</span>Insurance-friendly options</li><li class="bp bp-rehab"><span>07</span>Specialized rehab methods</li><li class="bp bp-gallery"><span>08</span>Facility photo gallery</li><li class="bp bp-facility"><span>09</span>Outpatient facility story</li><li class="bp bp-cta"><span>10</span>Start-your-journey CTA</li><li class="bp bp-form"><span>11</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/katy/</span></div><img src="../assets/img/projects/polygon/pg-br-katy.webp" alt="Katy branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Katy</h3>
+                <p class="bx-h1">Polygon PT Katy · Physical Therapy &amp; Sports Personalized Care</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 411 Park Grove Suite 720, Katy, TX 77450</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/katy.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports &amp; personalized care</span><span class="chip">Post-surgical rehab</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-pearland" aria-labelledby="tab-pearland" hidden>
+              <div class="bx-blueprint" aria-label="Pearland page blueprint">
+                <span class="bx-cap">Page blueprint · 11 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-why"><span>02</span>Why this clinic (3 reasons)</li><li class="bp bp-cond"><span>03</span>Condition carousel</li><li class="bp bp-comm"><span>04</span>South Asian &amp; Indian community</li><li class="bp bp-opts"><span>05</span>Insurance-friendly options</li><li class="bp bp-gallery"><span>06</span>Facility photo gallery</li><li class="bp bp-rehab"><span>07</span>Specialized rehab methods</li><li class="bp bp-ins"><span>08</span>Accepted insurance logos</li><li class="bp bp-facility"><span>09</span>Outpatient facility story</li><li class="bp bp-cta"><span>10</span>Start-your-journey CTA</li><li class="bp bp-form"><span>11</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/pearland/</span></div><img src="../assets/img/projects/polygon/pg-br-pearland.webp" alt="Pearland branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Pearland</h3>
+                <p class="bx-h1">Polygon PT Pearland · Physical Therapy &amp; Personalized Care</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 12155 Shadow Creek Pkwy Suite 114, Pearland, TX 77584</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/pearland.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Personalized care</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-heights" aria-labelledby="tab-heights" hidden>
+              <div class="bx-blueprint" aria-label="Heights page blueprint">
+                <span class="bx-cap">Page blueprint · 9 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-why"><span>02</span>Why this clinic (3 reasons)</li><li class="bp bp-cond2"><span>03</span>Condition grid</li><li class="bp bp-cond"><span>04</span>Condition carousel</li><li class="bp bp-comm"><span>05</span>South Asian &amp; Indian community</li><li class="bp bp-rehab"><span>06</span>Specialized rehab methods</li><li class="bp bp-facility"><span>07</span>Outpatient facility story</li><li class="bp bp-cta"><span>08</span>Start-your-journey CTA</li><li class="bp bp-form"><span>09</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/heights/</span></div><img src="../assets/img/projects/polygon/pg-br-heights.webp" alt="Heights branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Heights</h3>
+                <p class="bx-h1">Polygon PT · Heights Houston Physical Therapy &amp; Personalized Care</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 2811 Airline Dr #4A, Houston, TX 77009</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/north-loop.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Personalized care</span><span class="chip">Manual therapy</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-richmond" aria-labelledby="tab-richmond" hidden>
+              <div class="bx-blueprint" aria-label="Richmond page blueprint">
+                <span class="bx-cap">Page blueprint · 9 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-why"><span>02</span>Why this clinic (3 reasons)</li><li class="bp bp-cond2"><span>03</span>Condition grid</li><li class="bp bp-cond"><span>04</span>Condition carousel</li><li class="bp bp-comm"><span>05</span>South Asian &amp; Indian community</li><li class="bp bp-rehab"><span>06</span>Specialized rehab methods</li><li class="bp bp-facility"><span>07</span>Outpatient facility story</li><li class="bp bp-cta"><span>08</span>Start-your-journey CTA</li><li class="bp bp-form"><span>09</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/richmond/</span></div><img src="../assets/img/projects/polygon/pg-br-richmond.webp" alt="Richmond branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Richmond</h3>
+                <p class="bx-h1">Polygon PT Richmond · Physical Therapy &amp; Personalized Care</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 7103 S Peek Rd Unit 200, Richmond, TX 77407</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/richmond.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports rehab</span><span class="chip">Personalized care</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-west-houston" aria-labelledby="tab-west-houston" hidden>
+              <div class="bx-blueprint" aria-label="West Houston page blueprint">
+                <span class="bx-cap">Page blueprint · 10 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-ins"><span>02</span>Accepted insurance logos</li><li class="bp bp-why"><span>03</span>Why this clinic (3 reasons)</li><li class="bp bp-opts"><span>04</span>Insurance-friendly options</li><li class="bp bp-cond"><span>05</span>Condition carousel</li><li class="bp bp-comm"><span>06</span>South Asian &amp; Indian community</li><li class="bp bp-rehab"><span>07</span>Specialized rehab methods</li><li class="bp bp-facility"><span>08</span>Outpatient facility story</li><li class="bp bp-cta"><span>09</span>Start-your-journey CTA</li><li class="bp bp-form"><span>10</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/west-houston/</span></div><img src="../assets/img/projects/polygon/pg-br-west-houston.webp" alt="West Houston branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>West Houston</h3>
+                <p class="bx-h1">Polygon PT West Houston · Physical Therapy &amp; Sports Rehabilitation Center</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 12303 Westheimer Rd Suite J, Houston, TX 77077</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/west-houston.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports rehab</span>
+                  <span class="chip">Hindi &amp; Gujarati speaking</span>
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-galleria" aria-labelledby="tab-galleria" hidden>
+              <div class="bx-blueprint" aria-label="Galleria page blueprint">
+                <span class="bx-cap">Page blueprint · 9 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-ins"><span>02</span>Accepted insurance logos</li><li class="bp bp-why"><span>03</span>Why this clinic (3 reasons)</li><li class="bp bp-cond"><span>04</span>Condition carousel</li><li class="bp bp-opts"><span>05</span>Insurance-friendly options</li><li class="bp bp-rehab"><span>06</span>Specialized rehab methods</li><li class="bp bp-facility"><span>07</span>Outpatient facility story</li><li class="bp bp-cta"><span>08</span>Start-your-journey CTA</li><li class="bp bp-form"><span>09</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/galleria/</span></div><img src="../assets/img/projects/polygon/pg-br-galleria.webp" alt="Galleria branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Galleria</h3>
+                <p class="bx-h1">Polygon PT Galleria · Physical Therapy &amp; Sports Rehabilitation Center</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 2400 Augusta Dr, Suite 212, Houston, TX 77057</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/galleria.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports rehab</span>
+                  
+                  <span class="chip">Medicare &amp; personal injury</span>
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel bx" id="p-missouri-city" aria-labelledby="tab-missouri-city" hidden>
+              <div class="bx-blueprint" aria-label="Missouri City page blueprint">
+                <span class="bx-cap">Page blueprint · 8 modules</span>
+                <ol><li class="bp bp-hero"><span>01</span>Branch hero + contact card</li><li class="bp bp-why"><span>02</span>Why this clinic (3 reasons)</li><li class="bp bp-cond2"><span>03</span>Condition grid</li><li class="bp bp-cond"><span>04</span>Condition carousel</li><li class="bp bp-rehab"><span>05</span>Specialized rehab methods</li><li class="bp bp-facility"><span>06</span>Outpatient facility story</li><li class="bp bp-cta"><span>07</span>Start-your-journey CTA</li><li class="bp bp-form"><span>08</span>Booking form</li></ol>
+              </div>
+              <figure class="frame bx-shot"><div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/missouri-city/</span></div><img src="../assets/img/projects/polygon/pg-br-missouri-city.webp" alt="Missouri City branch page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="bx-facts">
+                <h3>Missouri City</h3>
+                <p class="bx-h1">Polygon PT Missouri City · Physical Therapy &amp; Sports Rehabilitation Center</p>
+                <ul class="bx-list">
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> 3550 FM 1092 Rd, Suite B, Missouri City, TX 77459</li>
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> <code>page-template/missouri.php</code></li>
+                </ul>
+                <div class="bx-tags">
+                  <span class="chip">Sports rehab</span>
+                  
+                  
+                </div>
+                <p class="bx-links-cap">Links to shared condition pages</p>
+                <div class="bx-conds"><span>Knee</span><span>Elbow</span><span>Upper &amp; Lower Back</span><span>Wrist</span><span>Shoulder</span><span>Ankle &amp; Foot</span></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 04 DESIGN SYSTEM ========== -->
+    <section class="section" id="system">
+      <div class="container">
+        <p class="section-label" data-reveal><span>04</span> Design system</p>
+        <h2 class="section-title" data-reveal>Modules × <span class="glow">branches.</span></h2>
+        <p class="section-intro" data-reveal>I designed one library of section modules. Each branch template picks from it, which is how eight pages share one look but tell eight different stories.</p>
+
+        <div class="matrix glass" data-reveal role="table" aria-label="Which section modules each branch page uses">
+          <div class="mx-row mx-head" role="row"><span role="columnheader">Module</span><span role="columnheader" class="mx-b">Sugar Land</span><span role="columnheader" class="mx-b">Katy</span><span role="columnheader" class="mx-b">Pearland</span><span role="columnheader" class="mx-b">Heights</span><span role="columnheader" class="mx-b">Richmond</span><span role="columnheader" class="mx-b">West Houston</span><span role="columnheader" class="mx-b">Galleria</span><span role="columnheader" class="mx-b">Missouri City</span><span role="columnheader" class="mx-n">Used</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Branch hero + contact card</span><span role="cell" class="mx-c on" title="Sugar Land: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Katy: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Pearland: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Heights: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Richmond: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="West Houston: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Galleria: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-c on" title="Missouri City: section 1"><i>1</i><span class="sr-only">yes, section 1</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Why this clinic (3 reasons)</span><span role="cell" class="mx-c on" title="Sugar Land: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Katy: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="Pearland: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="Heights: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="Richmond: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="West Houston: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Galleria: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Missouri City: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Condition grid</span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c on" title="Heights: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Richmond: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c on" title="Missouri City: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-n">3/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Condition carousel</span><span role="cell" class="mx-c on" title="Sugar Land: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Katy: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Pearland: section 3"><i>3</i><span class="sr-only">yes, section 3</span></span><span role="cell" class="mx-c on" title="Heights: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Richmond: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="West Houston: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c on" title="Galleria: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Missouri City: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Accepted insurance logos</span><span role="cell" class="mx-c on" title="Sugar Land: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="Katy: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Pearland: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c on" title="West Houston: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c on" title="Galleria: section 2"><i>2</i><span class="sr-only">yes, section 2</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-n">5/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Insurance-friendly options</span><span role="cell" class="mx-c on" title="Sugar Land: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Katy: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c on" title="Pearland: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c on" title="West Houston: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Galleria: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-n">5/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">South Asian &amp; Indian community</span><span role="cell" class="mx-c on" title="Sugar Land: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c on" title="Katy: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c on" title="Pearland: section 4"><i>4</i><span class="sr-only">yes, section 4</span></span><span role="cell" class="mx-c on" title="Heights: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c on" title="Richmond: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-c on" title="West Houston: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-n">6/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Facility photo gallery</span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c on" title="Katy: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="Pearland: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-c" ><span class="sr-only">no</span></span><span role="cell" class="mx-n">2/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Specialized rehab methods</span><span role="cell" class="mx-c on" title="Sugar Land: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c on" title="Katy: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Pearland: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Heights: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c on" title="Richmond: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c on" title="West Houston: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Galleria: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-c on" title="Missouri City: section 5"><i>5</i><span class="sr-only">yes, section 5</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Outpatient facility story</span><span role="cell" class="mx-c on" title="Sugar Land: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="Katy: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Pearland: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Heights: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Richmond: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="West Houston: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="Galleria: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-c on" title="Missouri City: section 6"><i>6</i><span class="sr-only">yes, section 6</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Start-your-journey CTA</span><span role="cell" class="mx-c on" title="Sugar Land: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Katy: section 10"><i>10</i><span class="sr-only">yes, section 10</span></span><span role="cell" class="mx-c on" title="Pearland: section 10"><i>10</i><span class="sr-only">yes, section 10</span></span><span role="cell" class="mx-c on" title="Heights: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="Richmond: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="West Houston: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Galleria: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-c on" title="Missouri City: section 7"><i>7</i><span class="sr-only">yes, section 7</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <div class="mx-row" role="row"><span role="rowheader">Booking form</span><span role="cell" class="mx-c on" title="Sugar Land: section 10"><i>10</i><span class="sr-only">yes, section 10</span></span><span role="cell" class="mx-c on" title="Katy: section 11"><i>11</i><span class="sr-only">yes, section 11</span></span><span role="cell" class="mx-c on" title="Pearland: section 11"><i>11</i><span class="sr-only">yes, section 11</span></span><span role="cell" class="mx-c on" title="Heights: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Richmond: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="West Houston: section 10"><i>10</i><span class="sr-only">yes, section 10</span></span><span role="cell" class="mx-c on" title="Galleria: section 9"><i>9</i><span class="sr-only">yes, section 9</span></span><span role="cell" class="mx-c on" title="Missouri City: section 8"><i>8</i><span class="sr-only">yes, section 8</span></span><span role="cell" class="mx-n">8/8</span></div>
+          <p class="mx-note">Numbers show where the module sits on that branch's page. Same modules, different order and mix per branch.</p>
+        </div>
+
+        <h3 class="sub-head" data-reveal>Hub &amp; spoke linking</h3>
+        <p class="section-intro hs-intro" data-reveal>Every branch page links to all six condition pages, and the condition pages lead back to booking. Hover a branch to trace its links.</p>
+
+        <div class="hub-wrap glass" data-reveal>
+          <svg class="hub" viewBox="0 0 860 440" role="img" aria-label="Each of the 8 branch pages links to all 6 condition pages"><g class="hub-conds"><g class="hc"><circle cx="670" cy="70" r="9"/><text x="690" y="75">Knee</text></g><g class="hc"><circle cx="670" cy="130" r="9"/><text x="690" y="135">Elbow</text></g><g class="hc"><circle cx="670" cy="190" r="9"/><text x="690" y="195">Upper &amp; Lower Back</text></g><g class="hc"><circle cx="670" cy="250" r="9"/><text x="690" y="255">Wrist</text></g><g class="hc"><circle cx="670" cy="310" r="9"/><text x="690" y="315">Shoulder</text></g><g class="hc"><circle cx="670" cy="370" r="9"/><text x="690" y="375">Ankle &amp; Foot</text></g></g><g class="hb" tabindex="0" aria-label="Sugar Land links to all six condition pages"><path d="M190 40.0 C 430 40.0, 430 70.0, 670 70.0"/><path d="M190 40.0 C 430 40.0, 430 130.0, 670 130.0"/><path d="M190 40.0 C 430 40.0, 430 190.0, 670 190.0"/><path d="M190 40.0 C 430 40.0, 430 250.0, 670 250.0"/><path d="M190 40.0 C 430 40.0, 430 310.0, 670 310.0"/><path d="M190 40.0 C 430 40.0, 430 370.0, 670 370.0"/><circle cx="190" cy="40.0" r="9"/><text x="170" y="45.0" text-anchor="end">Sugar Land</text></g><g class="hb" tabindex="0" aria-label="Katy links to all six condition pages"><path d="M190 91.4 C 430 91.4, 430 70.0, 670 70.0"/><path d="M190 91.4 C 430 91.4, 430 130.0, 670 130.0"/><path d="M190 91.4 C 430 91.4, 430 190.0, 670 190.0"/><path d="M190 91.4 C 430 91.4, 430 250.0, 670 250.0"/><path d="M190 91.4 C 430 91.4, 430 310.0, 670 310.0"/><path d="M190 91.4 C 430 91.4, 430 370.0, 670 370.0"/><circle cx="190" cy="91.4" r="9"/><text x="170" y="96.4" text-anchor="end">Katy</text></g><g class="hb" tabindex="0" aria-label="Pearland links to all six condition pages"><path d="M190 142.9 C 430 142.9, 430 70.0, 670 70.0"/><path d="M190 142.9 C 430 142.9, 430 130.0, 670 130.0"/><path d="M190 142.9 C 430 142.9, 430 190.0, 670 190.0"/><path d="M190 142.9 C 430 142.9, 430 250.0, 670 250.0"/><path d="M190 142.9 C 430 142.9, 430 310.0, 670 310.0"/><path d="M190 142.9 C 430 142.9, 430 370.0, 670 370.0"/><circle cx="190" cy="142.9" r="9"/><text x="170" y="147.9" text-anchor="end">Pearland</text></g><g class="hb" tabindex="0" aria-label="Heights links to all six condition pages"><path d="M190 194.3 C 430 194.3, 430 70.0, 670 70.0"/><path d="M190 194.3 C 430 194.3, 430 130.0, 670 130.0"/><path d="M190 194.3 C 430 194.3, 430 190.0, 670 190.0"/><path d="M190 194.3 C 430 194.3, 430 250.0, 670 250.0"/><path d="M190 194.3 C 430 194.3, 430 310.0, 670 310.0"/><path d="M190 194.3 C 430 194.3, 430 370.0, 670 370.0"/><circle cx="190" cy="194.3" r="9"/><text x="170" y="199.3" text-anchor="end">Heights</text></g><g class="hb" tabindex="0" aria-label="Richmond links to all six condition pages"><path d="M190 245.7 C 430 245.7, 430 70.0, 670 70.0"/><path d="M190 245.7 C 430 245.7, 430 130.0, 670 130.0"/><path d="M190 245.7 C 430 245.7, 430 190.0, 670 190.0"/><path d="M190 245.7 C 430 245.7, 430 250.0, 670 250.0"/><path d="M190 245.7 C 430 245.7, 430 310.0, 670 310.0"/><path d="M190 245.7 C 430 245.7, 430 370.0, 670 370.0"/><circle cx="190" cy="245.7" r="9"/><text x="170" y="250.7" text-anchor="end">Richmond</text></g><g class="hb" tabindex="0" aria-label="West Houston links to all six condition pages"><path d="M190 297.1 C 430 297.1, 430 70.0, 670 70.0"/><path d="M190 297.1 C 430 297.1, 430 130.0, 670 130.0"/><path d="M190 297.1 C 430 297.1, 430 190.0, 670 190.0"/><path d="M190 297.1 C 430 297.1, 430 250.0, 670 250.0"/><path d="M190 297.1 C 430 297.1, 430 310.0, 670 310.0"/><path d="M190 297.1 C 430 297.1, 430 370.0, 670 370.0"/><circle cx="190" cy="297.1" r="9"/><text x="170" y="302.1" text-anchor="end">West Houston</text></g><g class="hb" tabindex="0" aria-label="Galleria links to all six condition pages"><path d="M190 348.6 C 430 348.6, 430 70.0, 670 70.0"/><path d="M190 348.6 C 430 348.6, 430 130.0, 670 130.0"/><path d="M190 348.6 C 430 348.6, 430 190.0, 670 190.0"/><path d="M190 348.6 C 430 348.6, 430 250.0, 670 250.0"/><path d="M190 348.6 C 430 348.6, 430 310.0, 670 310.0"/><path d="M190 348.6 C 430 348.6, 430 370.0, 670 370.0"/><circle cx="190" cy="348.6" r="9"/><text x="170" y="353.6" text-anchor="end">Galleria</text></g><g class="hb" tabindex="0" aria-label="Missouri City links to all six condition pages"><path d="M190 400.0 C 430 400.0, 430 70.0, 670 70.0"/><path d="M190 400.0 C 430 400.0, 430 130.0, 670 130.0"/><path d="M190 400.0 C 430 400.0, 430 190.0, 670 190.0"/><path d="M190 400.0 C 430 400.0, 430 250.0, 670 250.0"/><path d="M190 400.0 C 430 400.0, 430 310.0, 670 310.0"/><path d="M190 400.0 C 430 400.0, 430 370.0, 670 370.0"/><circle cx="190" cy="400.0" r="9"/><text x="170" y="405.0" text-anchor="end">Missouri City</text></g><text class="hub-cap" x="190" y="434" text-anchor="middle">8 branch pages</text><text class="hub-cap" x="670" y="434" text-anchor="middle">6 condition pages</text></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 05 PAGES ========== -->
+    <section class="section" id="pages">
+      <div class="container">
+        <p class="section-label" data-reveal><span>05</span> Key pages</p>
+        <h2 class="section-title" data-reveal>Designed to <span class="glow">book visits.</span></h2>
+
+        <div class="sf-grid">
+          <div class="sf-preview" data-reveal>
+            <figure class="frame scroller" id="scroller" tabindex="0" aria-label="The full Katy branch page, scrolls on hover">
+              <div class="frame-bar"><i></i><i></i><i></i><span>polygonpt.com/katy</span><em class="scroll-hint">Hover to scroll</em></div>
+              <div class="scroller-view"><img src="../assets/img/projects/polygon/pg-katy-long.webp" alt="The full Katy branch page from banner to footer" width="864" height="5968" loading="lazy" /></div>
+            </figure>
+          </div>
+          <div class="sf-features" data-reveal>
+            <ul class="feature-list">
+              <li><b>Branch contact card</b> up top: address, phone, email, fax and opening hours, plus request-appointment and call buttons.</li>
+              <li><b>Condition carousel</b> linking to the shared pain-relief pages.</li>
+              <li><b>Insurance logos and options</b> where a branch needs them, with a "verify your coverage" path.</li>
+              <li><b>Community section</b> for branches serving the South Asian &amp; Indian community, with Hindi and Gujarati-speaking staff.</li>
+              <li><b>Facility gallery</b>, rehab methods and a booking form on every branch.</li>
+              <li><b>Sticky "Book now"</b> button on every page, and a home-page branch finder with live maps.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery" data-reveal>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>home · locations &amp; branches</span></div><img src="../assets/img/projects/polygon/pg-home-branches.webp" alt="Home page branch finder with maps, addresses and phone numbers" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/knee-pain-relief</span></div><img src="../assets/img/projects/polygon/pg-knee.webp" alt="Knee pain relief condition page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/shockwave-therapy</span></div><img src="../assets/img/projects/polygon/pg-shockwave.webp" alt="Focused shockwave therapy page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>katy · community</span></div><img src="../assets/img/projects/polygon/pg-katy-community.webp" alt="Section serving the South Asian and Indian community in Katy" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/book-now</span></div><img src="../assets/img/projects/polygon/pg-book.webp" alt="Book now page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/our-app</span></div><img src="../assets/img/projects/polygon/pg-app.webp" alt="Our app page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+        </div>
+
+        <div class="phones" data-reveal>
+          <figure class="phone"><img src="../assets/img/projects/polygon/m-pg-home.webp" alt="Home page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <figure class="phone up"><img src="../assets/img/projects/polygon/m-pg-katy.webp" alt="Katy branch page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <figure class="phone"><img src="../assets/img/projects/polygon/m-pg-shockwave.webp" alt="Shockwave therapy page on mobile" width="390" height="844" loading="lazy" class="zoomable" /></figure>
+          <p class="phones-cap">Designed mobile-first: most patients find a clinic on their phone.</p>
+        </div>
+
+        <div class="hl-grid hl-pg">
+          <article class="glass hl" data-reveal><span class="hl-num">01</span><h3>Structure before pixels</h3><p>I mapped the tree first: branch hubs, shared condition pages, conversion pages. The design followed the structure, not the other way round.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">02</span><h3>Templates + ACF</h3><p>A template per branch on a shared module library, with every text, photo and detail in ACF fields, so the clinic updates content without me.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">03</span><h3>Local SEO by design</h3><p>Branch-specific H1s and content, Yoast SEO on every page and 48 branch → condition links help each clinic rank in its own area.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">04</span><h3>Built for real patients</h3><p>Click-to-call, maps, hours and a sticky Book Now button on every page, plus forms protected by honeypot and anti-spam plugins.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">05</span><h3>Motion with purpose</h3><p>AOS reveals, Swiper carousels for conditions and facilities, and GSAP touches, kept light so pages stay fast on mobile.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">06</span><h3>One brand, many voices</h3><p>The same visual system flexes per branch: sports rehab, post-surgical care, community focus and insurance options, each where it belongs.</p></article>
+        </div>
+        <p class="privacy" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> All screenshots are from the live public site, polygonpt.com. Branch data in the graphics comes from the live pages.</p>
+      </div>
+    </section>
+
+    <section class="section cs-next">
+      <div class="container cs-next-inner glass" data-reveal>
+        <div>
+          <p class="kicker">Next case study</p>
+          <h2 class="cs-next-title">AmericaPort: <span class="glow">a multi-vendor marketplace.</span></h2>
+        </div>
+        <div class="cs-next-actions">
+          <a href="americaport.html" class="btn btn-primary"><span>Read it</span> <svg class="icon icon-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          <a href="../index.html#contact" class="btn btn-ghost"><svg class="icon" aria-hidden="true"><use href="#i-envelope"></use></svg> <span>Contact me</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../index.html" class="logo" aria-label="Back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <p class="footer-tag">Laravel · React · Next.js · WordPress</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/muhammad-ayyan1/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/n0bud-y" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year">2026</span> Muhammad Ayyan · Karachi, Pakistan</p>
+    </div>
+  </footer>
+
+  <a href="#main" class="back-top" id="backTop" aria-label="Back to top"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up"></use></svg></a>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot preview">
+    <button class="lb-close icon-btn" id="lbClose" aria-label="Close preview">✕</button>
+    <img id="lbImg" src="data:," alt="" />
+    <p class="lb-cap" id="lbCap"></p>
+  </dialog>
+</body>
+</html>

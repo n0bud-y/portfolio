@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>brand.cms — Multi-Brand CMS Case Study · Muhammad Ayyan</title>
+  <meta name="description" content="How I designed and built brand.cms: one Laravel + Inertia + React panel that runs blogs, location pages, SEO and settings for six brand websites through a drop-in PHP brand kit." />
+  <meta name="author" content="Muhammad Ayyan" />
+  <link rel="canonical" href="https://portfolio-muhammad-ayyan.vercel.app/projects/brands-cms" />
+  <meta name="theme-color" content="#05061a" />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="brand.cms — Multi-Brand CMS Case Study" />
+  <meta property="og:description" content="One panel, six brand websites: blogs, 181 auto-generated location pages, SEO, sitemaps and a team with per-brand access." />
+  <meta property="og:url" content="https://portfolio-muhammad-ayyan.vercel.app/projects/brands-cms" />
+  <meta property="og:image" content="https://portfolio-muhammad-ayyan.vercel.app/assets/img/projects/brands-cms/bc-sites.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+  <link rel="preload" href="../assets/fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../case-study.css" />
+
+  <script src="../assets/vendor/gsap-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/lenis-1.1.13.min.js" defer></script>
+  <script src="../case-study.js" defer></script>
+</head>
+<body class="cs">
+  <!-- Icons: Font Awesome Free 6.5.2 by @fontawesome (CC BY 4.0) + simple custom icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false"><symbol id="i-sun" viewBox="0 0 512 512"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></symbol><symbol id="i-arrow-up" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></symbol><symbol id="i-envelope" viewBox="0 0 512 512"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></symbol><symbol id="i-code" viewBox="0 0 640 512"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z"/></symbol><symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M14.5 3a6.5 6.5 0 0 0-6.2 8.4L2 17.7V22h4.3v-2.3h2.3v-2.3h2.3l1.7-1.7A6.5 6.5 0 1 0 14.5 3zm1.5 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 2.1c-1.2 1.4-2.1 3.7-2.4 6.4H4.1A8 8 0 0 1 11 4.1zm2 0a8 8 0 0 1 6.9 6.4h-4.5c-.3-2.7-1.2-5-2.4-6.4zM10.6 10.5c.4-3.2 1.4-5.2 1.4-5.2s1 2 1.4 5.2h-2.8zm-6.5 3h4.5c.3 2.7 1.2 5 2.4 6.4a8 8 0 0 1-6.9-6.4zm6.5 0h2.8c-.4 3.2-1.4 5.2-1.4 5.2s-1-2-1.4-5.2zm4.8 0h4.5a8 8 0 0 1-6.9 6.4c1.2-1.4 2.1-3.7 2.4-6.4z"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol><symbol id="i-sitemap" viewBox="0 0 24 24"><path d="M9 2h6v5h-2v3h7v4h2v6h-6v-6h2v-2h-5v2h2v6H9v-6h2v-2H6v2h2v6H2v-6h2v-4h7V7H9V2z"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM7 12v2h10v-2H7zm0 4v2h7v-2H7z"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-8.2 9.1L2 12l10 5 10-5-1.8-.9L12 15.2 3.8 11.1zm0 5L2 17l10 5 10-5-1.8-.9L12 20.2 3.8 16.1z"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 4.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/></symbol><symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9.2a3 3 0 0 1 5.6 0H20v2h-1.2a3 3 0 0 1-5.6 0H4V6zm0 10h1.2a3 3 0 0 1 5.6 0H20v2h-9.2a3 3 0 0 1-5.6 0H4v-2z"/></symbol></svg>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="progress" id="progress"></div>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Muhammad Ayyan, back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Case study">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#link" class="nav-link">How brands link</a>
+        <a href="#console" class="nav-link">The panel</a>
+        <a href="#team" class="nav-link">Team</a>
+        <a href="#live" class="nav-link">Live</a>
+        <a href="#stack" class="nav-link">Stack</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to light theme">
+          <svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg>
+        </button>
+        <a href="../index.html#projects" class="btn btn-ghost btn-sm back-btn"><svg class="icon icon-back" aria-hidden="true"><use href="#i-arrow-right"></use></svg> <span>All projects</span></a>
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ========== HERO ========== -->
+    <section class="cs-hero">
+      <div class="container cs-hero-grid">
+        <div class="cs-hero-copy">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span aria-hidden="true">/</span><a href="../index.html#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">brand.cms</span></nav>
+          <p class="kicker" data-hero>Case study <span class="dot-sep">·</span> Multi-brand CMS</p>
+          <h1 class="cs-title" data-hero>Brand<span class="glow">.cms</span></h1>
+          <p class="cs-lead" data-hero>
+            One panel that runs the blogs, location pages, SEO and settings of six brand websites, without rebuilding
+            any of them. Each site plugs in with a small PHP "brand kit" and pulls its content through a keyed API.
+            <strong>I designed and built it end to end.</strong>
+          </p>
+          <dl class="facts" data-hero>
+            <div><dt>Role</dt><dd>Full-stack dev &amp; UI design</dd></div>
+            <div><dt>Team</dt><dd>Solo · Ink Pixel Studios</dd></div>
+            <div><dt>Year</dt><dd>2026</dd></div>
+            <div><dt>Type</dt><dd>Multi-site headless CMS</dd></div>
+          </dl>
+          <ul class="tags" data-hero>
+            <li>Laravel 12</li><li>Inertia.js</li><li>React</li><li>TypeScript</li><li>Tailwind v4</li><li>Vite</li><li>MySQL</li><li>PHP brand kit</li>
+          </ul>
+          <p class="demo-note" data-hero><svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg> Internal agency tool · demo &amp; walkthrough available on request</p>
+        </div>
+
+        <div class="devices" id="devices" aria-label="brand.cms panel, a connected brand website and its mobile view">
+          <figure class="frame dev-store">
+            <div class="frame-bar"><i></i><i></i><i></i><span>brand.cms · all brands</span></div>
+            <img src="../assets/img/projects/brands-cms/bc-sites.webp" alt="brand.cms panel listing six brand websites" width="1440" height="900" class="zoomable" fetchpriority="high" />
+          </figure>
+          <figure class="frame dev-admin">
+            <div class="frame-bar"><i></i><i></i><i></i><span>brand website · generated page</span></div>
+            <img src="../assets/img/projects/brands-cms/live-city-service.webp" alt="Live brand website page 'Ghostwriting Services in Los Angeles' generated by the CMS" width="1440" height="900" class="zoomable" />
+          </figure>
+          <figure class="phone dev-phone">
+            <img src="../assets/img/projects/brands-cms/m-live-state.webp" alt="Generated California page on a phone" width="390" height="844" class="zoomable" />
+          </figure>
+          <span class="dev-glow" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="container">
+        <ul class="numbers" data-reveal>
+          <li><b data-count="6">6</b><span>brand websites run from one panel</span></li>
+          <li><b data-count="181">181</b><span>live location pages generated on a single brand site</span></li>
+          <li><b data-count="9">9</b><span>content block types in the visual post editor</span></li>
+          <li><b>~55<small>kB</small></b><span>gzipped app shell, thanks to React running on Preact</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 01 OVERVIEW ========== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <p class="section-label" data-reveal><span>01</span> Overview</p>
+        <h2 class="section-title" data-reveal>Six websites. <span class="glow">One panel.</span></h2>
+
+        <div class="overview-grid">
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag">The challenge</span>
+            <h3>Content scattered across six sites</h3>
+            <p>The agency runs several publishing brands, each with its own hand-built PHP website. Every new blog post, phone number or SEO tweak meant a developer editing files on that one site.</p>
+            <ul class="bullets">
+              <li>Writers couldn't publish without a developer.</li>
+              <li>Local SEO needed hundreds of "service in city" pages per brand.</li>
+              <li>The existing sites, designs and lead forms had to stay exactly as they were.</li>
+              <li>Different people needed access to different brands.</li>
+              <li>A panel outage must never take a brand website down.</li>
+            </ul>
+          </article>
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag ok">The solution</span>
+            <h3>A headless panel + a drop-in kit</h3>
+            <p>A central <b>Laravel + Inertia + React panel</b> where the team writes everything, and a tiny <b>PHP brand kit</b> each website drops in. The kit adds <b>/blogs</b>, location pages and sitemaps, and renders them inside the site's own header and footer.</p>
+            <ul class="bullets">
+              <li>Block-based post editor with layouts, authors, SEO and custom schema.</li>
+              <li>States × cities × services generate every local page automatically.</li>
+              <li>Settings like phone and logo flow into the site's existing pages.</li>
+              <li>File cache on each site: it keeps serving even if the panel is down.</li>
+              <li>Admin / editor roles with per-brand access, enforced on the server.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 02 HOW EVERY BRAND LINKS BACK ========== -->
+    <section class="section" id="link">
+      <div class="container">
+        <p class="section-label" data-reveal><span>02</span> How every brand links back</p>
+        <h2 class="section-title" data-reveal>Plug a brand in, <span class="glow">in six steps.</span></h2>
+        <p class="section-intro" data-reveal>A brand website never changes its pages. It gets a small kit and a key, and from then on the panel and the site talk to each other.</p>
+
+        <ol class="flow" id="flowList">
+          <li class="flow-line" aria-hidden="true"><span class="flow-fill" id="flowFill"></span></li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>1</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg> Panel · admin</span>
+              <h3>Create the brand</h3>
+              <p>Name, slug (used in API URLs), website URL and which blog layouts the site has. Writers later only see the layouts that brand actually supports.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/brands-cms/bc-site-new.webp" alt="New brand form with name, slug, website URL and blog layouts" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>2</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-key"></use></svg> Panel · keys</span>
+              <h3>Get a key and a secret</h3>
+              <p>The panel issues an <b>API key</b>, shown once and stored hashed, and an encrypted <b>cache secret</b>. It prints a ready-to-paste <code>cms/config.php</code>, and both can be rotated with one click.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/brands-cms/bc-brand.webp" alt="Brand page with the website connection config, key rotation and test connection" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>3</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg> Brand site · files</span>
+              <h3>Drop in the brand kit</h3>
+              <p>Copy <code>blog.php</code>, <code>location.php</code>, <code>sitemap.php</code> and the <code>cms/</code> folder to the site root, paste the config and merge a few <code>.htaccess</code> lines. Only <code>/blogs</code>, location URLs and sitemaps are routed to the kit. Every existing page keeps working.</p>
+            </div>
+            <figure class="code-card glass flow-shot" aria-label="Example cms/config.php">
+              <div class="frame-bar"><i></i><i></i><i></i><span>cms/config.php</span></div>
+<pre class="code"><span class="k">&lt;?php</span>
+<span class="c">// cms/config.php on https://brand.com</span>
+<span class="k">return</span> [
+  <span class="s">'panel_url'</span>    =&gt; <span class="s">'https://panel.agency.com'</span>,
+  <span class="s">'site'</span>         =&gt; <span class="s">'book-craft-services'</span>,
+  <span class="s">'api_key'</span>      =&gt; <span class="s">'••••••••••••••••'</span>,
+  <span class="s">'cache_secret'</span> =&gt; <span class="s">'••••••••••••••••'</span>,
+  <span class="s">'cache_ttl'</span>    =&gt; <span class="b">600</span>,
+];</pre>
+            </figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>4</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> Brand site · pages</span>
+              <h3>Wire the site's own pages</h3>
+              <p>Three small hooks: a config include gives variables like <code>$phone</code> their value from the panel (today's value as fallback), <code>cms_head()</code> adds SEO tags and site code, and <code>cms_footer_code()</code> closes the page.</p>
+            </div>
+            <figure class="code-card glass flow-shot" aria-label="Example header hook">
+              <div class="frame-bar"><i></i><i></i><i></i><span>include/config.php</span></div>
+<pre class="code"><span class="k">require_once</span> __DIR__ . <span class="s">'/../cms/brand.php'</span>;
+
+<span class="v">$phone</span> = <span class="f">setting_raw</span>(<span class="s">'phone'</span>, <span class="s">'(555) 010 0100'</span>);
+<span class="v">$email</span> = <span class="f">setting_raw</span>(<span class="s">'email'</span>, <span class="s">'hello@brand.com'</span>);
+<span class="v">$logo</span>  = <span class="f">setting_raw</span>(<span class="s">'logo'</span>, <span class="s">'assets/logo.webp'</span>);
+<span class="f">cms_page_meta</span>(<span class="v">$title</span>, <span class="v">$desc</span>);  <span class="c">// SEO from the panel</span></pre>
+            </figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>5</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-bolt"></use></svg> Panel ↔ site</span>
+              <h3>Test the connection</h3>
+              <p>One button calls the site's <code>clear-cache.php</code> with the secret and reports back. Then <b>Find pages</b> asks the site's <code>cms/pages.php</code> for its own page files, so their Google titles and descriptions become editable in the panel.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/brands-cms/bc-pages.webp" alt="Pages and SEO screen with Find pages" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>6</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"></use></svg> Search engines</span>
+              <h3>Sitemaps join the dots</h3>
+              <p><code>/sitemap.xml</code> becomes an index of the site's own pages, its blog and every location page, all generated. New posts, places and page files appear by themselves; point <code>robots.txt</code> at it once.</p>
+            </div>
+            <figure class="code-card glass flow-shot" aria-label="Generated sitemap index">
+              <div class="frame-bar"><i></i><i></i><i></i><span>bookcraftservices.com/sitemap.xml</span></div>
+<pre class="code"><span class="k">&lt;sitemapindex&gt;</span>
+  <span class="k">&lt;sitemap&gt;</span>…/sitemap-pages.xml<span class="k">&lt;/sitemap&gt;</span>
+  <span class="k">&lt;sitemap&gt;</span>…/sitemap-blogs.xml<span class="k">&lt;/sitemap&gt;</span>
+  <span class="k">&lt;sitemap&gt;</span>…/sitemap-locations.xml<span class="k">&lt;/sitemap&gt;</span>  <span class="c">&lt;!-- 181 URLs --&gt;</span>
+<span class="k">&lt;/sitemapindex&gt;</span></pre>
+            </figure>
+          </li>
+        </ol>
+
+        <!-- Two-way link -->
+        <h3 class="sub-head" data-reveal>The two-way link</h3>
+        <div class="arch arch-link-map" data-reveal>
+          <div class="arch-col">
+            <span class="arch-cap">Brand website · PHP</span>
+            <div class="arch-box glass">
+              <b>brand kit (cms/brand.php)</b>
+              <small>API client + 10-minute file cache · <code>setting()</code>, <code>cms_post()</code> helpers</small>
+            </div>
+            <div class="arch-box glass">
+              <b>Pages it serves</b>
+              <small>/blogs · /blogs/{slug} · /california · /california/los-angeles-ghostwriting · sitemaps</small>
+            </div>
+            <div class="arch-box glass">
+              <b>Endpoints it exposes</b>
+              <small>clear-cache.php · pages.php · files.php (everything else in <code>cms/</code> blocked by .htaccess)</small>
+            </div>
+          </div>
+          <div class="arch-link both" aria-hidden="true"><span>GET /api/v1/{brand}/…<br>X-Api-Key</span><span>POST clear-cache<br>+ cache secret</span></div>
+          <div class="arch-col core">
+            <span class="arch-cap">Panel · Laravel</span>
+            <div class="arch-box glass hub">
+              <b>brand.cms</b>
+              <ul>
+                <li>Brand API, keyed per site, 300 req/min</li>
+                <li>Only published posts with a past date</li>
+                <li>Renamed slugs answer 301 to the new URL</li>
+                <li>After every save: purge that brand's cache</li>
+                <li>"Find pages" &amp; "Files" call back into the site</li>
+                <li>Health check: <code>/api/health</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>Eloquent</span><span>uploads</span></div>
+          <div class="arch-col">
+            <span class="arch-cap">Storage</span>
+            <div class="arch-box glass"><b>MySQL</b><small>sites, posts, authors, services, locations, pages, settings, activity</small></div>
+            <div class="arch-box glass"><b>Public storage</b><small>images only, no SVG, 5 MB max</small></div>
+          </div>
+        </div>
+
+        <!-- One request -->
+        <div class="money glass" data-reveal>
+          <div class="money-head">
+            <h3>One request, start to finish</h3>
+            <p>A visitor opens <code>/california/los-angeles-ghostwriting</code> on a brand website:</p>
+          </div>
+          <div class="money-track" aria-label="Request lifecycle from URL to rendered HTML">
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></span><b>.htaccess</b><small>real file? no → location.php</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"></use></svg></span><b>URL map</b><small>cached · path → key "l5s3"</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node hub"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-bolt"></use></svg></span><b>Cache or API</b><small>{city}, {service} filled in</small></div>
+            <div class="money-pipe" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="money-node"><span class="mn-icon"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg></span><b>Full HTML</b><small>site header, its own lead form, SEO + schema</small></div>
+          </div>
+        </div>
+
+        <!-- API -->
+        <div class="api glass" data-reveal>
+          <h3>The brand API</h3>
+          <p class="api-sub">Every call needs the brand's <code>X-Api-Key</code>; a paused brand or a wrong key gets <code>401</code>.</p>
+          <div class="api-table" role="table" aria-label="Brand API endpoints">
+            <div role="row"><code role="cell">GET /api/v1/{brand}/settings</code><span role="cell">name, URL, every setting, and SEO overrides for the site's own pages</span></div>
+            <div role="row"><code role="cell">GET /api/v1/{brand}/posts</code><span role="cell">paginated post summaries (max 50 per page)</span></div>
+            <div role="row"><code role="cell">GET /api/v1/{brand}/posts/{slug}</code><span role="cell">full post with blocks, SEO, schema · 301 for renamed slugs</span></div>
+            <div role="row"><code role="cell">GET /api/v1/{brand}/sitemap</code><span role="cell">every published slug + last modified</span></div>
+            <div role="row"><code role="cell">GET /api/v1/{brand}/locations</code><span role="cell">URL map, redirects, the states-and-cities menu, hub texts</span></div>
+            <div role="row"><code role="cell">GET /api/v1/{brand}/locations/{key}</code><span role="cell">one state, city or service page with placeholders filled in</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 03 THE PANEL ========== -->
+    <section class="section" id="console">
+      <div class="container">
+        <p class="section-label" data-reveal><span>03</span> The panel</p>
+        <h2 class="section-title" data-reveal>Built for writers, <span class="glow">not developers.</span></h2>
+        <p class="section-intro" data-reveal>A bold, playful interface I designed so non-technical writers enjoy using it. Pick a module:</p>
+
+        <div class="console glass" data-reveal>
+          <div class="console-tabs" role="tablist" aria-label="Panel modules">
+            <button role="tab" class="ctab active" id="tab-posts" aria-controls="p-posts" aria-selected="true"><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> Posts</button>
+            <button role="tab" class="ctab" id="tab-editor" aria-controls="p-editor" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg> Block editor</button>
+            <button role="tab" class="ctab" id="tab-loc" aria-controls="p-loc" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg> Locations &amp; services</button>
+            <button role="tab" class="ctab" id="tab-seo" aria-controls="p-seo" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-sliders"></use></svg> Settings &amp; theme</button>
+            <button role="tab" class="ctab" id="tab-brands" aria-controls="p-brands" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> All brands</button>
+          </div>
+
+          <div class="console-panels">
+            <section role="tabpanel" class="cpanel active" id="p-posts" aria-labelledby="tab-posts">
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/s/{brand}/posts</span></div><img src="../assets/img/projects/brands-cms/bc-posts.webp" alt="Posts list with live, draft, scheduled and trash counts" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Every brand's posts in one place</h3>
+                <ul class="bullets">
+                  <li>Live, drafts, scheduled and trash at a glance, with search, month and day filters.</li>
+                  <li>Schedule posts with a future publish date; the API only returns them once that date passes.</li>
+                  <li>Duplicate a post as a draft with a free slug, move it to another brand, or restore from trash.</li>
+                  <li>Renaming a slug keeps the old URL alive with a 301 redirect.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-editor" aria-labelledby="tab-editor" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/s/{brand}/posts/new</span></div><img src="../assets/img/projects/brands-cms/bc-post-new.webp" alt="New post with block picker, publishing, layout and author cards" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Stack blocks, pick a layout</h3>
+                <ul class="bullets">
+                  <li>9 block types: heading, paragraph, image, image + text, quote, call to action, two columns, gallery, FAQ.</li>
+                  <li>4 layouts (classic, hero, sidebar with table of contents, minimal), limited to what each site supports.</li>
+                  <li>Per-post SEO title, description, share image and custom JSON-LD schema, validated and stored as data.</li>
+                  <li>Authors written once per brand; the default writer box shows under every post.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/brands-cms/bc-post-editor-full.webp" data-alt="Full post editor with blocks">See a full post →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-loc" aria-labelledby="tab-loc" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/s/{brand}/locations</span></div><img src="../assets/img/projects/brands-cms/bc-locations.webp" alt="Locations: states with their cities, 55 pages from 3 states, 8 cities and 4 services" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Write once, publish everywhere</h3>
+                <ul class="bullets">
+                  <li>Add states and cities; each gets a page with banner, the site's own lead form, services, cities, FAQs and contact.</li>
+                  <li>Services are templates: <code>{location}</code>, <code>{city}</code>, <code>{service}</code>, <code>{brand}</code> become real names on every page.</li>
+                  <li>3 states, 8 cities and 4 services already make 55 pages; any single page can override its text, FAQs or SEO, or be hidden.</li>
+                  <li>Brand-wide page defaults and a <code>/locations</code> hub; renamed slugs redirect with 301.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/brands-cms/bc-location-page-full.webp" data-alt="Ghostwriting in California page editor">See a generated page →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-seo" aria-labelledby="tab-seo" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/s/{brand}/settings</span></div><img src="../assets/img/projects/brands-cms/bc-settings.webp" alt="Brand settings: contact, branding, social links, blog page and theme" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>One source of truth per brand</h3>
+                <ul class="bullets">
+                  <li>Contact details, logo, favicon, footer text and social links, read on the site with <code>setting('phone')</code>.</li>
+                  <li>Theme colours and fonts flow into the kit's pages as CSS variables, so they match each brand.</li>
+                  <li>Site code for <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code> (GTM, verification, chat widgets), with every change logged.</li>
+                  <li>Pages &amp; SEO: Google titles, descriptions, share images and "hide from Google" for the site's own pages.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/brands-cms/bc-settings-full.webp" data-alt="Full brand settings page">See all settings →</button>
+              </div>
+            </section>
+
+            <section role="tabpanel" class="cpanel" id="p-brands" aria-labelledby="tab-brands" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/sites</span></div><img src="../assets/img/projects/brands-cms/bc-sites.webp" alt="All brands overview with post and editor counts" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Switch brands in one click</h3>
+                <ul class="bullets">
+                  <li>Every brand as a card with its posts, editors and active / paused state.</li>
+                  <li>The brand switcher in the sidebar keeps writers in the right site.</li>
+                  <li>Pausing a brand instantly stops its website from loading content (API answers 401).</li>
+                  <li>A console import loads posts, authors, services, locations and settings from JSON when onboarding a brand.</li>
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 04 TEAM & ACCESS ========== -->
+    <section class="section" id="team">
+      <div class="container">
+        <p class="section-label" data-reveal><span>04</span> Team &amp; access</p>
+        <h2 class="section-title" data-reveal>The right people, <span class="glow">the right brands.</span></h2>
+
+        <div class="team-grid">
+          <div class="team-steps" data-reveal>
+            <h3>Adding a writer takes a minute</h3>
+            <ol class="mini-steps">
+              <li><b>Team → Add person</b><span>name, email and a password (8+ characters)</span></li>
+              <li><b>Pick a role</b><span>Editor or Admin</span></li>
+              <li><b>Tick their brands</b><span>editors only ever see the brands they're given</span></li>
+              <li><b>Save</b><span>they sign in and land on their own brands' dashboard</span></li>
+            </ol>
+            <div class="roles glass">
+              <div class="roles-row head"><span></span><b>Admin</b><b>Editor</b></div>
+              <div class="roles-row"><span>Posts, authors, locations, services</span><i class="yes">✓</i><i class="yes">✓</i></div>
+              <div class="roles-row"><span>SEO, schema, settings, site code, files</span><i class="yes">✓</i><i class="yes">✓</i></div>
+              <div class="roles-row"><span>Brand connection, API keys, pause, delete</span><i class="yes">✓</i><i class="no">—</i></div>
+              <div class="roles-row"><span>Create brands, manage team, activity log</span><i class="yes">✓</i><i class="no">—</i></div>
+              <p class="roles-note">Enforced on the server with route gates, not just hidden in the UI. Logins are rate-limited per email + IP.</p>
+            </div>
+          </div>
+          <div class="team-shots" data-reveal>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/users/new</span></div><img src="../assets/img/projects/brands-cms/bc-user-new.webp" alt="Add person form with role and brand access" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/users</span></div><img src="../assets/img/projects/brands-cms/bc-users.webp" alt="Team list with admins and an editor and their brands" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 05 LIVE ========== -->
+    <section class="section" id="live">
+      <div class="container">
+        <p class="section-label" data-reveal><span>05</span> Live on the brands</p>
+        <h2 class="section-title" data-reveal>Their design. <span class="glow">Our content.</span></h2>
+
+        <div class="sf-grid">
+          <div class="sf-preview" data-reveal>
+            <figure class="frame scroller" id="scroller" tabindex="0" aria-label="A full blog post on Book Craft Services, scrolls on hover">
+              <div class="frame-bar"><i></i><i></i><i></i><span>bookcraftservices.com/blogs/…</span><em class="scroll-hint">Hover to scroll</em></div>
+              <div class="scroller-view"><img src="../assets/img/projects/brands-cms/live-post-full.webp" alt="A full blog post served by the CMS inside the brand's own design" width="864" height="4200" loading="lazy" /></div>
+            </figure>
+          </div>
+          <div class="sf-features" data-reveal>
+            <ul class="feature-list">
+              <li><b>Same header, footer and lead form</b> as the rest of the brand site: the kit renders inside them.</li>
+              <li><b>Brand colours and fonts</b> from the panel's theme, as CSS variables the site can still override.</li>
+              <li><b>Breadcrumbs, category, author box, reading time</b> and "keep reading" on every post.</li>
+              <li><b>Full SEO in the HTML</b>: title, description, canonical, Open Graph and BlogPosting schema.</li>
+              <li><b>Location pages</b> fill the lead form with hidden fields, so each lead says which city and service it came from.</li>
+              <li><b>Promotions from config</b>, like the Black Friday bar with a countdown that removes itself after the end date.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery" data-reveal>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/blogs</span></div><img src="../assets/img/projects/brands-cms/live-blogs.webp" alt="Blog listing on Book Craft Services" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/locations</span></div><img src="../assets/img/projects/brands-cms/live-locations.webp" alt="Locations hub listing every state and city" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/california</span></div><img src="../assets/img/projects/brands-cms/live-state.webp" alt="Generated California state page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>another brand · /blogs</span></div><img src="../assets/img/projects/brands-cms/live-aap-blogs.webp" alt="Blog on a second brand, All American Publications, with its own design" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 06 STACK ========== -->
+    <section class="section" id="stack">
+      <div class="container">
+        <p class="section-label" data-reveal><span>06</span> Under the hood</p>
+        <h2 class="section-title" data-reveal>Small, fast <span class="glow">and safe.</span></h2>
+
+        <div class="hl-grid">
+          <article class="glass hl" data-reveal><span class="hl-num">01</span><h3>One app, no separate API to deploy</h3><p>Laravel controllers render React pages through Inertia, with normal sessions and CSRF. Each screen is its own small JS chunk built with Vite.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">02</span><h3>React on Preact</h3><p>React is aliased to Preact in Vite, so the whole app shell is about 55 kB gzipped and each screen adds 1 to 7 kB. The one missing React 19 API is shimmed.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">03</span><h3>Never down because of the panel</h3><p>Brand sites cache every response as files for 10 minutes, keep serving the last copy if the panel is unreachable, and cache 404s for 60 s so bots can't hammer it.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">04</span><h3>Security by default</h3><p>Hashed API keys, encrypted secrets, sanitized rich text and URLs, image-only uploads (no SVG), pasted schema that can never run as script, anti-framing headers.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">05</span><h3>Everything is logged</h3><p>An activity log shows who created, changed, published or deleted what, on which brand, with the old and new value of every field.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">06</span><h3>Easy to run on shared hosting</h3><p>No terminal needed: an admin-only maintenance page runs migrations, storage links and cache clears. New builds reload open tabs on their next click.</p></article>
+        </div>
+
+        <p class="privacy" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg> Panel screenshots are from a local copy with demo content; emails and keys are masked. Brand website screenshots are the live public pages.</p>
+      </div>
+    </section>
+
+    <!-- ========== NEXT ========== -->
+    <section class="section cs-next">
+      <div class="container cs-next-inner glass" data-reveal>
+        <div>
+          <p class="kicker">Next case study</p>
+          <h2 class="cs-next-title">AmericaPort: <span class="glow">a multi-vendor marketplace.</span></h2>
+        </div>
+        <div class="cs-next-actions">
+          <a href="americaport.html" class="btn btn-primary"><span>Read it</span> <svg class="icon icon-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          <a href="../index.html#contact" class="btn btn-ghost"><svg class="icon" aria-hidden="true"><use href="#i-envelope"></use></svg> <span>Contact me</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../index.html" class="logo" aria-label="Back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <p class="footer-tag">Laravel · React · Next.js · WordPress</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/muhammad-ayyan1/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/n0bud-y" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year">2026</span> Muhammad Ayyan · Karachi, Pakistan</p>
+    </div>
+  </footer>
+
+  <a href="#main" class="back-top" id="backTop" aria-label="Back to top"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up"></use></svg></a>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot preview">
+    <button class="lb-close icon-btn" id="lbClose" aria-label="Close preview">✕</button>
+    <img id="lbImg" src="data:," alt="" />
+    <p class="lb-cap" id="lbCap"></p>
+  </dialog>
+</body>
+</html>

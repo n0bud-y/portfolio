@@ -2,26 +2,40 @@
 // category: "webapp" | "business" | "corporate" | "ecommerce"
 // image: path to a real screenshot, e.g. "images/hanks.jpg" (leave "" to show the gradient placeholder)
 // link:  verified live URL (leave "" to hide the "Show project" button)
+// caseStudy: path to a detailed project page (adds a "Read case study" button)
 const projects = [
+  {
+    title: "AmericaPort",
+    type: "Multi-Vendor Marketplace",
+    category: "ecommerce",
+    stack: ["Laravel", "Vue 2", "Vuetify", "Stripe", "MySQL", "Bootstrap"],
+    desc: "A Made-in-USA marketplace: many sellers, one Stripe checkout, per-vendor order fulfilment, commission ledger and payouts, plus a 13-module admin console. Built end to end.",
+    icon: "anchor",
+    image: "assets/img/projects/americaport/sf-home.webp",
+    link: "",
+    caseStudy: "projects/americaport.html",
+  },
   {
     title: "Multi-Brand CMS",
     type: "Full-Stack Web App",
     category: "webapp",
-    stack: ["Laravel 12", "Inertia.js", "React", "TypeScript", "MySQL", "REST API"],
-    desc: "One central panel that manages blogs, location pages, sitemaps and site settings for many brand websites, with admin / editor roles and a drop-in PHP kit for each brand site.",
+    stack: ["Laravel 12", "Inertia.js", "React", "TypeScript", "Tailwind v4", "PHP brand kit"],
+    desc: "brand.cms: one panel that runs the blogs, auto-generated location pages, SEO and settings of six brand websites through a drop-in PHP kit and a keyed API. Designed and built by me.",
     icon: "server",
-    image: "",
+    image: "assets/img/projects/brands-cms/bc-sites.webp",
     link: "",
+    caseStudy: "projects/brands-cms.html",
   },
   {
     title: "Ink Pixel Studios",
     type: "Company Website",
     category: "webapp",
     stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS v4", "Contentful"],
-    desc: "The studio's brand portfolio and lead-generation website, with content managed in a headless CMS and end-to-end tests.",
+    desc: "The studio's brand portfolio and lead-generation site: 62 server-rendered pages, a Contentful case-study engine, mega menus and GSAP motion. Sole developer, 60%+ of the UI designed by me.",
     icon: "wand-magic-sparkles",
-    image: "",
+    image: "assets/img/projects/inkpixel/ip-home.webp",
     link: "",
+    caseStudy: "projects/inkpixel.html",
   },
   {
     title: "Hank's Heating & Cooling",
@@ -54,24 +68,15 @@ const projects = [
     link: "",
   },
   {
-    title: "AmericaPort",
-    type: "Corporate / Business Website",
-    category: "corporate",
-    stack: ["WordPress", "Custom Theme", "CMS", "Frontend Development"],
-    desc: "Corporate-style website focused on structured content, brand presentation, responsive layout, and professional UX.",
-    icon: "anchor",
-    image: "",
-    link: "",
-  },
-  {
     title: "Polygon PT",
-    type: "Business / Professional Website",
+    type: "Multi-Branch Clinic Website",
     category: "business",
-    stack: ["WordPress", "Custom Theme", "Frontend Development"],
-    desc: "Professionally structured website focused on strong layout composition, responsive behavior, and polished frontend presentation.",
+    stack: ["WordPress", "Custom Theme", "ACF", "PHP", "GSAP", "UI/UX Design"],
+    desc: "A physical therapy group with 8 branches: I designed the site structure and UI, and built 26 custom templates where every branch has its own page, modules and local SEO, linked to shared condition pages.",
     icon: "dumbbell",
-    image: "",
+    image: "assets/img/projects/polygon/pg-home.webp",
     link: "",
+    caseStudy: "projects/polygon-pt.html",
   },
   {
     title: "Purplecan Apparel",
@@ -93,6 +98,8 @@ const hasGsap = typeof gsap !== "undefined";
 const esc = (v) =>
   String(v).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 const safeUrl = (u) => (/^https:\/\//i.test(u) ? u : "");
+// case-study pages are local .html files only
+const safeLocal = (u) => (/^[\w-]+(\/[\w-]+)*\.html$/.test(u || "") ? u : "");
 const safeImg = (u) => (/^(https:\/\/|\/|\.\/|[\w-]+\/)[\w\-./%]+$/i.test(u) ? u : "");
 
 const grid = document.getElementById("workGrid");
@@ -112,7 +119,10 @@ grid.innerHTML = projects
             <span class="art-btn"></span>
           </div>
         </div>`;
-    const overlay = link
+    const study = safeLocal(p.caseStudy);
+    const overlay = study
+      ? `<div class="overlay"><a href="${esc(study)}" class="btn btn-primary btn-sm">Read case study<span class="sr-only">: ${esc(p.title)}</span></a></div>`
+      : link
       ? `<div class="overlay"><a href="${esc(link)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">View live site<span class="sr-only"> ${esc(p.title)} (opens in a new tab)</span></a></div>`
       : "";
     return `
@@ -126,6 +136,7 @@ grid.innerHTML = projects
         <h3 class="project-title">${esc(p.title)}</h3>
         <p class="project-desc">${esc(p.desc)}</p>
         <ul class="tags">${p.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+        ${study ? `<a href="${esc(study)}" class="text-link card-link">Read case study <span aria-hidden="true">→</span></a>` : ""}
       </div>
     </article>`;
   })
@@ -138,6 +149,7 @@ filters.forEach((btn) => {
   const f = btn.dataset.filter;
   const count = f === "all" ? projects.length : projects.filter((p) => p.category === f).length;
   btn.querySelector(".count").textContent = count;
+  if (!count) btn.hidden = true; // no projects in this category (yet)
   btn.setAttribute("aria-pressed", btn.classList.contains("active"));
 
   btn.addEventListener("click", () => {

@@ -821,3 +821,6 @@ a.contact-card:hover { border-color: var(--accent-text); translate: 0 -3px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* "Read case study" link under a project card */
+.card-link { align-self: flex-start; margin-top: 18px; }

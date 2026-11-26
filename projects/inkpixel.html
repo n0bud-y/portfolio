@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ink Pixel Studios — Agency Website Case Study · Muhammad Ayyan</title>
+  <meta name="description" content="How I built the Ink Pixel Studios website: Next.js 16, React 19 and TypeScript, Contentful-powered case studies, 36 service pages from one template, GSAP motion, and a crash-safe deploy on cPanel behind Cloudflare." />
+  <meta name="author" content="Muhammad Ayyan" />
+  <link rel="canonical" href="https://portfolio-muhammad-ayyan.vercel.app/projects/inkpixel" />
+  <meta name="theme-color" content="#05061a" />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Ink Pixel Studios — Agency Website Case Study" />
+  <meta property="og:description" content="Next.js 16 + React 19 + Contentful: 62 pages, a case-study engine, mega menus and motion, built as the sole developer." />
+  <meta property="og:url" content="https://portfolio-muhammad-ayyan.vercel.app/projects/inkpixel" />
+  <meta property="og:image" content="https://portfolio-muhammad-ayyan.vercel.app/assets/img/projects/inkpixel/ip-home.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+  <link rel="preload" href="../assets/fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../case-study.css" />
+
+  <script src="../assets/vendor/gsap-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger-3.12.5.min.js" defer></script>
+  <script src="../assets/vendor/lenis-1.1.13.min.js" defer></script>
+  <script src="../case-study.js" defer></script>
+</head>
+<body class="cs">
+  <!-- Icons: Font Awesome Free 6.5.2 by @fontawesome (CC BY 4.0) + simple custom icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false"><symbol id="i-sun" viewBox="0 0 512 512"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></symbol><symbol id="i-arrow-up" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></symbol><symbol id="i-envelope" viewBox="0 0 512 512"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></symbol><symbol id="i-code" viewBox="0 0 640 512"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></symbol><symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 2.1c-1.2 1.4-2.1 3.7-2.4 6.4H4.1A8 8 0 0 1 11 4.1zm2 0a8 8 0 0 1 6.9 6.4h-4.5c-.3-2.7-1.2-5-2.4-6.4zM10.6 10.5c.4-3.2 1.4-5.2 1.4-5.2s1 2 1.4 5.2h-2.8zm-6.5 3h4.5c.3 2.7 1.2 5 2.4 6.4a8 8 0 0 1-6.9-6.4zm6.5 0h2.8c-.4 3.2-1.4 5.2-1.4 5.2s-1-2-1.4-5.2zm4.8 0h4.5a8 8 0 0 1-6.9 6.4c1.2-1.4 2.1-3.7 2.4-6.4z"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM7 12v2h10v-2H7zm0 4v2h7v-2H7z"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-8.2 9.1L2 12l10 5 10-5-1.8-.9L12 15.2 3.8 11.1zm0 5L2 17l10 5 10-5-1.8-.9L12 20.2 3.8 16.1z"/></symbol><symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9.2a3 3 0 0 1 5.6 0H20v2h-1.2a3 3 0 0 1-5.6 0H4V6zm0 10h1.2a3 3 0 0 1 5.6 0H20v2h-9.2a3 3 0 0 1-5.6 0H4v-2z"/></symbol></svg>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="progress" id="progress"></div>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Muhammad Ayyan, back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Case study">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#ui" class="nav-link">UI I built</a>
+        <a href="#content" class="nav-link">Content engine</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#stack" class="nav-link">Stack</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to light theme">
+          <svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg>
+        </button>
+        <a href="../index.html#projects" class="btn btn-ghost btn-sm back-btn"><svg class="icon icon-back" aria-hidden="true"><use href="#i-arrow-right"></use></svg> <span>All projects</span></a>
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ========== HERO ========== -->
+    <section class="cs-hero">
+      <div class="container cs-hero-grid">
+        <div class="cs-hero-copy">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span aria-hidden="true">/</span><a href="../index.html#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">Ink Pixel Studios</span></nav>
+          <p class="kicker" data-hero>Case study <span class="dot-sep">·</span> Agency website</p>
+          <h1 class="cs-title" data-hero>Ink Pixel<br><span class="glow">Studios.</span></h1>
+          <p class="cs-lead" data-hero>
+            The studio's brand portfolio and lead-generation website: 62 server-rendered pages, a Contentful-powered
+            case-study engine and a motion-rich UI on Next.js 16 and React 19.
+            <strong>I'm the sole developer, and I designed 60%+ of the UI myself.</strong>
+          </p>
+          <dl class="facts" data-hero>
+            <div><dt>Role</dt><dd>Sole developer + UI design</dd></div>
+            <div><dt>Team</dt><dd>Ink Pixel Studios</dd></div>
+            <div><dt>Year</dt><dd>2026</dd></div>
+            <div><dt>Type</dt><dd>Agency site + headless CMS</dd></div>
+          </dl>
+          <ul class="tags" data-hero>
+            <li>Next.js 16</li><li>React 19</li><li>TypeScript</li><li>Tailwind v4</li><li>GSAP</li><li>Contentful</li><li>GraphQL</li><li>Zod</li><li>Cloudflare</li>
+          </ul>
+          <p class="demo-note" data-hero><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> Live at inkpixelstudios.com</p>
+        </div>
+
+        <div class="devices" id="devices" aria-label="Ink Pixel Studios home page, services mega menu and mobile view">
+          <figure class="frame dev-store">
+            <div class="frame-bar"><i></i><i></i><i></i><span>inkpixelstudios.com</span></div>
+            <img src="../assets/img/projects/inkpixel/ip-home.webp" alt="Ink Pixel Studios home page hero" width="1440" height="900" class="zoomable" fetchpriority="high" />
+          </figure>
+          <figure class="frame dev-admin">
+            <div class="frame-bar"><i></i><i></i><i></i><span>services mega menu</span></div>
+            <img src="../assets/img/projects/inkpixel/ip-menu-services.webp" alt="Services mega menu with six categories and their services" width="1440" height="900" class="zoomable" />
+          </figure>
+          <figure class="phone dev-phone">
+            <img src="../assets/img/projects/inkpixel/m-ip-menu.webp" alt="Mobile navigation" width="390" height="844" class="zoomable" />
+          </figure>
+          <span class="dev-glow" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="container">
+        <ul class="numbers" data-reveal>
+          <li><b data-count="62">62</b><span>public pages in the sitemap, all server-rendered</span></li>
+          <li><b data-count="36">36</b><span>service pages from one template, under 6 core services</span></li>
+          <li><b data-count="19">19</b><span>Contentful content-model migrations, kept as code</span></li>
+          <li><b data-count="114">114</b><span>commits, every one of them mine</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 01 OVERVIEW ========== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <p class="section-label" data-reveal><span>01</span> Overview</p>
+        <h2 class="section-title" data-reveal>Fast, findable, <span class="glow">and editable.</span></h2>
+
+        <div class="overview-grid">
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag">The brief</span>
+            <h3>A production-grade agency site</h3>
+            <p>The studio needed a site that wins clients and that the marketing team can keep fresh. Targets were written down before a line of code:</p>
+            <ul class="bullets">
+              <li>Speed: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1; Lighthouse mobile ≥ 90.</li>
+              <li>SEO: server-rendered HTML, valid structured data, Lighthouse SEO 100.</li>
+              <li>Accessibility: WCAG 2.2 AA.</li>
+              <li>Editors publish case studies and posts without a developer.</li>
+              <li>No lead ever silently lost; hosted on the company's cPanel server.</li>
+            </ul>
+          </article>
+          <article class="glass ov-card" data-reveal>
+            <span class="ov-tag ok">What I built</span>
+            <h3>One Next.js app, two content sources</h3>
+            <p>A <b>Next.js 16 App Router</b> site where static pages keep their copy in <b>typed TypeScript files</b>, while <b>Contentful</b> holds only what editors change often: case studies and blog posts.</p>
+            <ul class="bullets">
+              <li>Contentful read over GraphQL with plain <code>fetch</code>: no SDK, server-only, cached with tags.</li>
+              <li>Content types created by numbered migration scripts, never by hand.</li>
+              <li>Every env variable validated with Zod: a missing key fails the build, not the visitor.</li>
+              <li>Standalone Node server on cPanel, built on <code>git pull</code>, cached by Cloudflare.</li>
+              <li>Mega menus, popups, responsive layouts and GSAP motion: designed and built by me.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 02 UI I DESIGNED & BUILT ========== -->
+    <section class="section" id="ui">
+      <div class="container">
+        <p class="section-label" data-reveal><span>02</span> UI I designed &amp; built</p>
+        <h2 class="section-title" data-reveal>Menus, motion <span class="glow">&amp; micro-moments.</span></h2>
+        <p class="section-intro" data-reveal>The home page and a few templates follow our designer's Figma. The rest, more than 60% of the interface, I designed and built myself:</p>
+
+        <div class="console glass" data-reveal>
+          <div class="console-tabs" role="tablist" aria-label="UI pieces">
+            <button role="tab" class="ctab active" id="tab-menus" aria-controls="p-menus" aria-selected="true"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg> Mega menus</button>
+            <button role="tab" class="ctab" id="tab-tech" aria-controls="p-tech" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg> Technologies</button>
+            <button role="tab" class="ctab" id="tab-est" aria-controls="p-est" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-sliders"></use></svg> Cost estimator</button>
+            <button role="tab" class="ctab" id="tab-process" aria-controls="p-process" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-bolt"></use></svg> Process timeline</button>
+            <button role="tab" class="ctab" id="tab-ind" aria-controls="p-ind" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> Industries</button>
+          </div>
+          <div class="console-panels">
+            <section role="tabpanel" class="cpanel active" id="p-menus" aria-labelledby="tab-menus">
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>Services ▾</span></div><img src="../assets/img/projects/inkpixel/ip-menu-services.webp" alt="Services mega menu" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Three mega menus, one engine</h3>
+                <ul class="bullets">
+                  <li>Services, Industries and Technologies share one <code>MegaMenu</code> frame and a <code>useHoverMenu</code> hook for open / close timing.</li>
+                  <li>Category rail on the left, live preview on the right, "book a free call" in the footer.</li>
+                  <li>Keyboard and screen-reader friendly: Industries and Technologies are real buttons, not fake links.</li>
+                  <li>Links prefetch on hover, so the next page is ready before the click.</li>
+                </ul>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel" id="p-tech" aria-labelledby="tab-tech" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>Technologies ▾</span></div><img src="../assets/img/projects/inkpixel/ip-menu-tech.webp" alt="Technologies mega menu" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>A stack browser in the header</h3>
+                <ul class="bullets">
+                  <li>Six groups (frontend, backend, mobile, databases, CMS &amp; e-commerce, cloud) with real tech logos.</li>
+                  <li>Each group shows its tools as logo tiles, with a "book a free call" prompt for anyone with a stack in mind.</li>
+                  <li>On phones it folds into an accordion inside a full-screen menu.</li>
+                </ul>
+                <button class="mini-link zoom-trigger" data-src="../assets/img/projects/inkpixel/m-ip-menu.webp" data-alt="Mobile navigation">See the mobile menu →</button>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel" id="p-est" aria-labelledby="tab-est" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/services/development/web-development</span></div><img src="../assets/img/projects/inkpixel/ip-estimator.webp" alt="Cost estimator quiz" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>A quiz that turns visitors into leads</h3>
+                <ul class="bullets">
+                  <li>Step-by-step questions with a progress bar, then contact details and an estimate request.</li>
+                  <li>Ends in a custom "your estimate request is in" dialog: no page reload, no lost context.</li>
+                  <li>Every enquiry is emailed and also written to a backup log, so none is silently lost.</li>
+                </ul>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel" id="p-process" aria-labelledby="tab-process" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>home · process</span></div><img src="../assets/img/projects/inkpixel/ip-home-process.webp" alt="Process timeline with phases lighting up" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>A timeline that follows the scroll</h3>
+                <ul class="bullets">
+                  <li>Five phases from discovery to launch; the line draws and each phase lights up as you scroll.</li>
+                  <li>Built on reusable motion components, not one-off animation code.</li>
+                </ul>
+              </div>
+            </section>
+            <section role="tabpanel" class="cpanel" id="p-ind" aria-labelledby="tab-ind" hidden>
+              <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>Industries ▾</span></div><img src="../assets/img/projects/inkpixel/ip-menu-industries.webp" alt="Industries mega menu" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+              <div class="cpanel-text">
+                <h3>Industries, tabbed and reusable</h3>
+                <ul class="bullets">
+                  <li>Industries live as typed data, so the menu and the home tabs stay in sync.</li>
+                  <li>The same section re-themes for light pages with a single <code>tone</code> prop.</li>
+                  <li>Accessible tabs: arrow keys, Home / End, and inactive panels stay in the HTML for SEO.</li>
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <h3 class="sub-head" data-reveal>Motion system</h3>
+        <div class="motion-grid" data-reveal>
+          <div class="motion glass"><b>SmoothScroll</b><span>inertia scrolling on GSAP</span></div>
+          <div class="motion glass"><b>StackPin</b><span>projects stack &amp; swap while pinned</span></div>
+          <div class="motion glass"><b>HorizontalPin</b><span>vertical scroll → sideways track</span></div>
+          <div class="motion glass"><b>Reveal</b><span>sections ease in on scroll</span></div>
+          <div class="motion glass"><b>LetterWave</b><span>headlines ripple in letter by letter</span></div>
+          <div class="motion glass"><b>CountUp</b><span>numbers count to their value</span></div>
+          <div class="motion glass"><b>Magnetic</b><span>buttons lean toward the cursor</span></div>
+          <div class="motion glass"><b>PointerParallax</b><span>layers drift with the mouse</span></div>
+        </div>
+
+        <div class="filmstrip" data-reveal>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>project 02 / 10</span></div><img src="../assets/img/projects/inkpixel/ip-home-s1.webp" alt="Pinned project stack showing project 2 of 10" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>project 05 / 10</span></div><img src="../assets/img/projects/inkpixel/ip-home-s2.webp" alt="Pinned project stack showing project 5 of 10" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>project 09 / 10</span></div><img src="../assets/img/projects/inkpixel/ip-home-s3.webp" alt="Pinned project stack showing project 9 of 10" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <p class="phones-cap">StackPin in action: the section stays pinned while ten projects slide over each other.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 03 CONTENT ENGINE ========== -->
+    <section class="section" id="content">
+      <div class="container">
+        <p class="section-label" data-reveal><span>03</span> Content engine</p>
+        <h2 class="section-title" data-reveal>One template, <span class="glow">ten case studies.</span></h2>
+
+        <div class="arch" data-reveal>
+          <div class="arch-col">
+            <span class="arch-cap">Editors</span>
+            <div class="arch-box glass"><b>Contentful web app</b><small>case studies, blog posts, authors, clients, testimonials, metrics</small></div>
+            <div class="arch-box glass"><b>Migrations as code</b><small>19 numbered scripts define every content type; run with one npm command</small></div>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>GraphQL</span><span>fetch · tags</span></div>
+          <div class="arch-col core">
+            <span class="arch-cap">Next.js 16 · server</span>
+            <div class="arch-box glass hub">
+              <b>App Router, server components</b>
+              <ul>
+                <li>Server-only GraphQL client, no SDK</li>
+                <li>Pages prerendered, refreshed hourly</li>
+                <li>Cache tags for instant webhook refresh</li>
+                <li>Draft mode routes for preview</li>
+                <li>A section hides itself if Contentful fails</li>
+                <li>Sitemap, robots, OG images generated</li>
+              </ul>
+            </div>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>HTML</span><span>cache headers</span></div>
+          <div class="arch-col">
+            <span class="arch-cap">Delivery</span>
+            <div class="arch-box glass"><b>Cloudflare</b><small>CDN and protection in front of the app; pages carry cache headers</small></div>
+            <div class="arch-box glass"><b>cPanel Node app</b><small>standalone Next.js server, behind the cache</small></div>
+          </div>
+        </div>
+
+        <div class="sf-grid cs-engine">
+          <div class="sf-features" data-reveal>
+            <h3 class="sub-head tight">How a case study is built</h3>
+            <ul class="feature-list">
+              <li><b>Hero layouts</b>: split, centered or light, plus optional "hero layers" (floating screenshots) or a muted looping video.</li>
+              <li><b>Ordered sections</b>: text + image, tech stack, cards, screens, SWOT, results, testimonials, gallery and video, in any order.</li>
+              <li><b>Automatic rhythm</b>: sections alternate navy and white by themselves; hidden ones don't count.</li>
+              <li><b>Accent words</b>: wrap a word in *asterisks* and it renders in the brand gradient.</li>
+              <li><b>Client safety</b>: a client logo only shows once "logo use approved" is ticked; testimonials stay drafts until approved.</li>
+              <li><b>Reused everywhere</b>: the same entries feed the work listing and the project cards on service pages.</li>
+            </ul>
+          </div>
+          <div class="gallery two" data-reveal>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>hero layers</span></div><img src="../assets/img/projects/inkpixel/ip-case.webp" alt="Case study hero with floating app screenshots" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>SWOT section</span></div><img src="../assets/img/projects/inkpixel/ip-case-swot.webp" alt="SWOT analysis section" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>results</span></div><img src="../assets/img/projects/inkpixel/ip-case-results.webp" alt="Results section with metrics" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+            <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>tech stack</span></div><img src="../assets/img/projects/inkpixel/ip-case-stack.webp" alt="Tech stack section with logos" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </div>
+        </div>
+
+        <div class="gallery" data-reveal>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/case-studies</span></div><img src="../assets/img/projects/inkpixel/ip-work.webp" alt="Case studies listing" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          <figure class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>/case-studies/gulbaan</span></div><img src="../assets/img/projects/inkpixel/ip-case2.webp" alt="Gulbaan case study with a different hero layout" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 04 SERVICES ========== -->
+    <section class="section" id="services">
+      <div class="container">
+        <p class="section-label" data-reveal><span>04</span> Service pages</p>
+        <h2 class="section-title" data-reveal>42 pages, <span class="glow">one system.</span></h2>
+        <p class="section-intro" data-reveal>6 core services and 36 services live at <code>/services/[core]/[service]</code>. Each core service has its own animated scene; each service page is the same template fed by a typed content file.</p>
+
+        <ol class="flow" id="flowList">
+          <li class="flow-line" aria-hidden="true"><span class="flow-fill" id="flowFill"></span></li>
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>1</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg> /services</span>
+              <h3>All services</h3>
+              <p>An overview of every category with a capabilities marquee, featured logos and a contact form.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/inkpixel/ip-services.webp" alt="All services page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>2</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg> /services/[core]</span>
+              <h3>A scene per core service</h3>
+              <p>Development, AI automation, branding, marketing, software and apps each open with their own illustrated, animated hero scene, built in code rather than video, so it stays crisp and light.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/inkpixel/ip-core-ai.webp" alt="AI automation core service page with its scene" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>3</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg> /services/[core]/[service]</span>
+              <h3>One service template</h3>
+              <p>Hero, offerings, "why choose us", related projects pulled from Contentful, the cost estimator, workflow, domains and FAQs. A new service is a new entry in a typed file, not a new page.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/inkpixel/ip-service.webp" alt="Web development service page" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+          <li class="flow-step" data-reveal>
+            <div class="flow-dot"><span>4</span></div>
+            <div class="flow-text">
+              <span class="flow-who"><svg class="icon" aria-hidden="true"><use href="#i-envelope"></use></svg> /contact</span>
+              <h3>Every path ends in a lead</h3>
+              <p>A project form with budget ranges and next steps. Submissions are emailed to sales and written to a backup log outside the app folder, so a deploy can never wipe them.</p>
+            </div>
+            <figure class="frame flow-shot"><div class="frame-bar"><i></i><i></i><i></i></div><img src="../assets/img/projects/inkpixel/ip-contact-form.webp" alt="Contact form" width="1440" height="900" loading="lazy" class="zoomable" /></figure>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== 05 STACK ========== -->
+    <section class="section" id="stack">
+      <div class="container">
+        <p class="section-label" data-reveal><span>05</span> Under the hood</p>
+        <h2 class="section-title" data-reveal>Engineering <span class="glow">I'm proud of.</span></h2>
+        <div class="hl-grid">
+          <article class="glass hl" data-reveal><span class="hl-num">01</span><h3>Content model as code</h3><p>Every Contentful type, from blog posts to case-study sections, comes from 19 numbered migration scripts. The model is reviewable, repeatable and never edited by hand.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">02</span><h3>No SDK, typed fetchers</h3><p>A tiny server-only GraphQL client over <code>fetch</code>, with typed queries like <code>getCaseStudy</code> and <code>getProjectCards</code>, hourly revalidation and cache tags.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">03</span><h3>Fails safe, not loud</h3><p>If Contentful is down or a type is missing, that one section hides itself and logs why; the rest of the page still builds and ships.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">04</span><h3>Crash-safe cPanel deploy</h3><p>A git post-merge hook builds on <code>git pull</code>, and the app runs from a copied <code>live/</code> server, so a build killed half-way no longer takes the site down. A low-memory build mode fits shared hosting.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">05</span><h3>Config that can't be wrong</h3><p>Environment variables are validated with <code>@t3-oss/env-nextjs</code> and Zod. A missing or empty key fails the build instead of breaking a page for a visitor.</p></article>
+          <article class="glass hl" data-reveal><span class="hl-num">06</span><h3>Prerendered, refreshed quietly</h3><p>Pages are prerendered and refreshed in the background, and send <code>s-maxage=3600</code> with stale-while-revalidate, so they are ready to be cached at the edge.</p></article>
+        </div>
+        <p class="privacy" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg> All screenshots are from the live public site, inkpixelstudios.com. Client case studies shown are public pages on the studio's website.</p>
+      </div>
+    </section>
+
+    <!-- ========== NEXT ========== -->
+    <section class="section cs-next">
+      <div class="container cs-next-inner glass" data-reveal>
+        <div>
+          <p class="kicker">Next case study</p>
+          <h2 class="cs-next-title">brand.cms: <span class="glow">one panel, six websites.</span></h2>
+        </div>
+        <div class="cs-next-actions">
+          <a href="brands-cms.html" class="btn btn-primary"><span>Read it</span> <svg class="icon icon-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          <a href="../index.html#contact" class="btn btn-ghost"><svg class="icon" aria-hidden="true"><use href="#i-envelope"></use></svg> <span>Contact me</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../index.html" class="logo" aria-label="Back to home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="logo-text">ayyan<span class="accent">.dev</span></span>
+      </a>
+      <p class="footer-tag">Laravel · React · Next.js · WordPress</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/muhammad-ayyan1/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/n0bud-y" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year">2026</span> Muhammad Ayyan · Karachi, Pakistan</p>
+    </div>
+  </footer>
+
+  <a href="#main" class="back-top" id="backTop" aria-label="Back to top"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up"></use></svg></a>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot preview">
+    <button class="lb-close icon-btn" id="lbClose" aria-label="Close preview">✕</button>
+    <img id="lbImg" src="data:," alt="" />
+    <p class="lb-cap" id="lbCap"></p>
+  </dialog>
+</body>
+</html>
